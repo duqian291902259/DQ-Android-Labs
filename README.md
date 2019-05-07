@@ -1,7 +1,12 @@
 ---
 
 # DQ-Android-Labs
-Contains various magical modules with cool tech in the future.
+Contains various magical modules with cool tech in the future.such as soloader....
+
+New modules are being updated...
+
+Github-->: [The best SoLoader for android](https://github.com/duqian291902259/DQ-Android-Labs)
+
 
 ### 1，SoLoader，android动态加载so库
 #### 无需修改已有工程的so加载逻辑，支持so动态下发并安全加载的方案。
@@ -16,8 +21,6 @@ Contains various magical modules with cool tech in the future.
      
 3，System.load(soAbsolutePath);传统方法指定so路径加载，不适合大项目和第三方lib，so下发加载不够灵活，不推荐。
 
-
-Github-->: [soloader](https://github.com/duqian291902259/DQ-Android-Labs/soloader)
 
 <!-- more -->
 
