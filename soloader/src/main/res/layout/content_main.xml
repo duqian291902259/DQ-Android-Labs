@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_marginTop="50dp"
+            android:text="    动态加载so库demo，无需修改已有工程的so加载逻辑，支持so动态下发并安全加载的方案。\n
+  在应用启动的时,一次注入本地so路径path，待程序使用过程中so准备后安全加载。so动态加载黑科技，安全可靠，线上验证，强烈推荐！注入路径后，加载so的姿势：\n
+  1，System.loadLibrary(soName); 无需改变系统load方法，注入路径后照常加载，推荐。\n
+  2，使用第三方库ReLinker，有so加载成功、失败的回调，安全加载不崩溃。\n
+  3，System.load(soAbsolutePath);传统方法指定so路径加载，不适合大项目和第三方lib，不灵活，不推荐。\n
+by: duqian2010@gmail.com"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14dp"
+            android:gravity="left"/>
+    <Button
+            android:id="@+id/btn_load_so"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:text="动态加载指定path的so"/>
+
+    <Button android:id="@+id/btn_clear_so"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="清除so，重启APP再次加载"/>
+
+</LinearLayout>

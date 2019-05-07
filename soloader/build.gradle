@@ -1,0 +1,105 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        applicationId "site.duqian.so.loader"
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86','x86_64', 'arm64-v8a' //
+        }
+    }
+
+    packagingOptions {
+        exclude 'libs/x86/libsostub.so'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/jni', 'src/main/jni/']
+            jniLibs.srcDirs = ['libs']
+            res.srcDirs = ['src/main/res', 'src/main/res/xml']
+        }
+    }
+    signingConfigs {
+        debug {
+            //storeFile file('../keystore/debug.keystore')
+            def keystore = getProperty("NONO_KEYSTORE")
+            def keystorePassword = getProperty("NONO_KEYSTORE_PASSWORD")
+            def alias = getProperty("NONO_ALIAS")
+            def aliasPassword = getProperty("NONO_ALIAS_PASSWORD")
+            storeFile file(keystore)
+            storePassword keystorePassword
+            keyAlias alias
+            keyPassword aliasPassword
+        }
+        release {
+            def keystore = getProperty("NONO_KEYSTORE")
+            def keystorePassword = getProperty("NONO_KEYSTORE_PASSWORD")
+            def alias = getProperty("NONO_ALIAS")
+            def aliasPassword = getProperty("NONO_ALIAS_PASSWORD")
+            storeFile file(keystore)
+            storePassword keystorePassword
+            keyAlias alias
+            keyPassword aliasPassword
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path file('CMakeLists.txt')
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    bundle {
+        abi {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        language {
+            enableSplit = true
+        }
+
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.getkeepsafe.relinker:relinker:1.3.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
