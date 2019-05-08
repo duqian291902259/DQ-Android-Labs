@@ -73,6 +73,6 @@ private static void install(ClassLoader classLoader, File folder) throws Throwab
 ```
 
 ### Thanks
-Welcome to contact me: [duqian2010@gmail.com](https://www.duqian.site) or Wechat:dusan2010
+Welcome to contact me: [duqian2010@gmail.com](http://www.duqian.site) or Wechat:dusan2010
 
 <!-- more -->
