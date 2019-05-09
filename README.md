@@ -72,6 +72,9 @@ private static void install(ClassLoader classLoader, File folder) throws Throwab
         }
 ```
 
+screenshot-->
+![screenshot](https://github.com/duqian291902259/DQ-Android-Labs/tree/master/soloader/screenshot.png#pic_center=540x960)
+
 ### Thanks
 Welcome to contact me: [duqian2010@gmail.com](http://www.duqian.site) or Wechat:dusan2010
 
