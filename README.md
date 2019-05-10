@@ -72,6 +72,8 @@ private static void install(ClassLoader classLoader, File folder) throws Throwab
             nativeLibraryPathElements.set(dexPathList, elements);
         }
 ```
+下载apk体验一下吧：
+[soloader-release.apk](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/soloader-release.apk)
 
 ### Thanks
 Welcome to contact me: [duqian2010@gmail.com](http://www.duqian.site) or Wechat:dusan2010

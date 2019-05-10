@@ -3,6 +3,7 @@ package site.duqian.soloader;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,13 +19,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import com.getkeepsafe.relinker.ReLinker;
 import site.duqian.so.loader.R;
 
 import java.io.File;
 
 /**
- * description:1，so动态加载demo，2，用于测试google官方android app bundle方案
+ * description:1，so动态加载demo，2，用于测试google官方android app bundle
+ *
+ * 动态加载so库demo，无需修改已有工程的so加载逻辑，支持so动态下发并安全加载的方案。\n
+ * 在应用启动的时,注入本地so路径，待程序使用过程中so准备后安全加载。so动态加载黑科技，安全可靠！注入路径后，加载so的姿势：\n
+ * 1，System.loadLibrary(soName); 无需改变系统load方法，注入路径后照常加载，推荐。\n
+ * 2，使用第三方库ReLinker，有so加载成功、失败的回调，安全加载不崩溃。\n
+ * 3，System.load(soAbsolutePath);传统方法指定so路径加载，不适合大项目和第三方lib，不灵活，不推荐。\n
  *
  * @author 杜小菜 Created on 2019-05-07 - 11:03.
  * E-mail:duqian2010@gmail.com
@@ -48,10 +56,13 @@ public class MainActivity extends AppCompatActivity {
         //1，如果没有so就加载，肯定报错
         loadLibrary();
 
+        TextView tips = findViewById(R.id.tv_tips);
+        final String text = "V" + getAppVersion(this) + ":" + tips.getText().toString();
+        tips.setText(text);
         findViewById(R.id.btn_load_so).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //2，copy so，测试so动态加载
+                //2，copy so，测试so动态加载,apk安装时没有的so库
                 applyForPermissions();
                 startLoadSoFromLocalPath();
             }
@@ -220,5 +231,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 获取版本号
+     */
+    public static int getAppVersion(Context ctx) {
+        int localVersion = 0;
+        try {
+            PackageInfo packageInfo = ctx.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(ctx.getPackageName(), 0);
+            localVersion = packageInfo.versionCode;
+            Log.d("dq", "version：" + localVersion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return localVersion;
     }
 }
