@@ -9,7 +9,6 @@ New modules are being updated...
 ### 1，SoLoader，android动态加载so库
 Github-->: [The best SoLoader for android](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/)
 
-![Android-SoLoader](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/screenshot.png?raw=true)
 #### 无需修改已有工程的so加载逻辑，支持so动态下发并安全加载的方案。
 
 如果项目native库很多，还支持各种平台，为了减少apk size，so库动态下发，按需加载是不错的选择。比如x86库服务器下发，动态加载，瘦身效果将非常可观。但是采取常规load方式，改动有点大，底层jar包，第三库不好改加载路径吖。so follow me：
@@ -72,8 +71,11 @@ private static void install(ClassLoader classLoader, File folder) throws Throwab
             nativeLibraryPathElements.set(dexPathList, elements);
         }
 ```
+
+![Android-SoLoader](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/screenshot.png?raw=false)
+
 下载apk体验一下吧：
-[soloader-release.apk](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/soloader-release.apk)
+[soloader-release.apk](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/release-app/soloader-release.apk)
 
 ### Thanks
 Welcome to contact me: [duqian2010@gmail.com](http://www.duqian.site) or Wechat:dusan2010
