@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import com.getkeepsafe.relinker.ReLinker;
 import site.duqian.so.loader.R;
 
 import java.io.File;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         applyForPermissions();
 
         //1，如果没有so就加载，肯定报错
-        loadLibrary();
+        //loadLibrary();
 
         TextView tips = findViewById(R.id.tv_tips);
         final String text = "V" + getAppVersion(this) + ":" + tips.getText().toString();
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //CrashReport.testJavaCrash();
                 //4，此处测试随安装包安装的so库，无需动态加载，apk安装时就有的
                 String msg = showResult();
                 Snackbar.make(view, "test so loader " + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
@@ -165,8 +165,12 @@ public class MainActivity extends AppCompatActivity {
      * 4，使用LocalSoHelper可以拷贝so文件并load
      */
     private void loadLibrary() {
-        //System.loadLibrary("nonostub");//系统方法也能正常加载，无法try catch住异常
-        ReLinker.loadLibrary(this, "nonostub", new ReLinker.LoadListener() {
+        System.loadLibrary("nonostub");//系统方法也能正常加载，无法try catch住异常
+        String msg = new com.nono.lite.MainActivity().getStringFromNative();
+        Log.d("dq", "getNativeResult=" + msg);
+        ToastUtil.toastShort(context, "from noonstub.so=" + msg);
+
+        /*ReLinker.loadLibrary(this, "nonostub", new ReLinker.LoadListener() {
             @Override
             public void success() {
                 String msg = new com.nono.lite.MainActivity().getStringFromNative();
@@ -179,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("dq", "load so failed " + t.toString());
                 ToastUtil.toastShort(context, "load so failed " + t.toString());
             }
-        });
+        });*/
     }
 
     public native String getStringFromCPP();//本类native方法

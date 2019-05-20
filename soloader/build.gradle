@@ -21,8 +21,8 @@ android {
         applicationId "site.duqian.so.loader"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 8
+        versionName "1.8"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -61,29 +61,7 @@ android {
             res.srcDirs = ['src/main/res', 'src/main/res/xml']
         }
     }
-    /*signingConfigs {
-        debug {
-            //storeFile file('../keystore/debug.keystore')
-            def keystore = getProperty("NONO_KEYSTORE")
-            def keystorePassword = getProperty("NONO_KEYSTORE_PASSWORD")
-            def alias = getProperty("NONO_ALIAS")
-            def aliasPassword = getProperty("NONO_ALIAS_PASSWORD")
-            storeFile file(keystore)
-            storePassword keystorePassword
-            keyAlias alias
-            keyPassword aliasPassword
-        }
-        release {
-            def keystore = getProperty("NONO_KEYSTORE")
-            def keystorePassword = getProperty("NONO_KEYSTORE_PASSWORD")
-            def alias = getProperty("NONO_ALIAS")
-            def aliasPassword = getProperty("NONO_ALIAS_PASSWORD")
-            storeFile file(keystore)
-            storePassword keystorePassword
-            keyAlias alias
-            keyPassword aliasPassword
-        }
-    }*/
+
     externalNativeBuild {
         cmake {
             path file('CMakeLists.txt')

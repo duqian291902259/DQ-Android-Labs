@@ -23,3 +23,6 @@
 #so动态加载
 -keep class site.duqian.soloader.LoadLibraryUtil.** { *; }
 -keep class site.duqian.soloader.ReflectUtil.** { *; }
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
