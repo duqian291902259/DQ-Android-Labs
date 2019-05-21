@@ -90,9 +90,7 @@ android {
         language {
             enableSplit = true
         }
-
     }
-
     dynamicFeatures = [":dynamic_feature"]
 }
 
