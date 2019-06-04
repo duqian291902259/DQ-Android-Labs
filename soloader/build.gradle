@@ -85,13 +85,13 @@ android {
             enableSplit = true
         }
         density {
-            enableSplit = true
+            enableSplit = false
         }
         language {
-            enableSplit = true
+            enableSplit = false
         }
     }
-    dynamicFeatures = [":dynamic_feature"]
+    //dynamicFeatures = [":dynamic_feature"]
 }
 
 dependencies {
