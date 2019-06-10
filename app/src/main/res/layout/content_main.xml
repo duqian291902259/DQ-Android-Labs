@@ -12,7 +12,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:background="#ccc"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:layout_margin="30dp"
+            android:translationZ="10dp"
             android:elevation="20dp">
 
         <TextView
@@ -21,6 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:text="Elevation 20dp"
+                android:elevation="30dp"
+                android:translationZ="10dp"
                 android:textSize="30sp"/>
 
     </RelativeLayout>
