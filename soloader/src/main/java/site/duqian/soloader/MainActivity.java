@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         final String soTest = sdcardLibDir + "/x86/libnonostub.so";
         if (new File(soTest).exists()) {
             isSoExist = true;
+            realLoadSoFile();//直接加载显示，修复第一次点击不加载的问题
             return;
         }
         ToastUtil.toastShort(context, "copying so from Assets ");

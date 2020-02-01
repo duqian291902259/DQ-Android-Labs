@@ -26,6 +26,7 @@ public class SoFileLoadManager {
             //File dir = new File(fromPath);
             File dir = context.getDir("libs", Context.MODE_PRIVATE);
             if (!isLoadSoFile(dir)) {
+                //拷贝非必须，只做演示，注入的路径可以是sdcard的，也可以是app私有目录存储，建议app的files目录，安全
                 copy(fromPath, dir.getAbsolutePath());
             }
             LoadLibraryUtil.installNativeLibraryPath(context.getApplicationContext().getClassLoader(), dir);
@@ -37,16 +38,16 @@ public class SoFileLoadManager {
     /**
      * 判断 so 文件是否存在
      */
-    public static boolean isLoadSoFile(File dir) {
+    private static boolean isLoadSoFile(File dir) {
         File[] currentFiles;
         currentFiles = dir.listFiles();
         boolean hasSoLib = false;
         if (currentFiles == null) {
             return false;
         }
-        for (int i = 0; i < currentFiles.length; i++) {
+        for (File currentFile : currentFiles) {
             // TODO: 2019/3/15 补充加校验so的逻辑。
-            if (currentFiles[i].getName().toLowerCase().contains("duqian")) {
+            if (currentFile.getName().toLowerCase().contains("duqian")) {
                 hasSoLib = true;
             }
         }
