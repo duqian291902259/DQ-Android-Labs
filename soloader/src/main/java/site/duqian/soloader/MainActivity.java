@@ -20,13 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import site.duqian.so.loader.R;
 
 import java.io.File;
 
+import site.duqian.so.loader.R;
+
 /**
  * description:1，so动态加载demo，2，用于测试google官方android app bundle
- *
+ * <p>
  * 动态加载so库demo，无需修改已有工程的so加载逻辑，支持so动态下发并安全加载的方案。\n
  * 在应用启动的时,注入本地so路径，待程序使用过程中so准备后安全加载。so动态加载黑科技，安全可靠！注入路径后，加载so的姿势：\n
  * 1，System.loadLibrary(soName); 无需改变系统load方法，注入路径后照常加载，推荐。\n
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1000;
     private final String sdcardLibDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/libs";
     private Context context;
+    private FloatingActionButton fab;
+
+    public native String getStringFromCPP();//工程自带的native方法
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,19 +75,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //3，清除自定义的so路径，杀进程退出app，再重新进入加载必定失败
                 clearSoFileAndPath();
-                loadLibrary();
+                loadLibrary();//click
                 restartApp();
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CrashReport.testJavaCrash();
-                //4，此处测试随安装包安装的so库，无需动态加载，apk安装时就有的
-                String msg = showResult();
-                Snackbar.make(view, "test so loader " + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                //4，此处测试随apk安装的so库，系统加载的，无需动态加载，apk安装时就有的
+                System.loadLibrary("sostub");//工程自带的so
+                final String msg = getStringFromCPP();
+                Log.d("dq", "工程自带的cpp代码方法=" + msg);
+                Snackbar.make(view, "test工程自带的so：" + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                ToastUtil.toastShort(context, "工程自带的cpp=" + msg);
             }
         });
     }
@@ -125,14 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String showResult() {
-        System.loadLibrary("sostub");
-        String msg = getStringFromCPP();
-        Log.d("dq", "showResult=" + msg);
-        ToastUtil.toastShort(context, "getStringFromC++=" + msg);
-        return msg;
-    }
-
     private boolean isSoExist = false;
 
     private void copyAssetsFile() {//将so拷贝到sdcard
@@ -166,27 +164,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadLibrary() {
         System.loadLibrary("nonostub");//系统方法也能正常加载，无法try catch住异常
-        String msg = new com.nono.lite.MainActivity().getStringFromNative();
-        Log.d("dq", "getNativeResult=" + msg);
-        ToastUtil.toastShort(context, "from noonstub.so=" + msg);
+        //msg是测试从assets目录拷贝的so的逻辑（模拟网络下载的某个so文件）
+        final String msg = new com.nono.lite.MainActivity().getStringFromNative();
+        Log.d("dq", "来自动态下发的so=" + msg);
+        ToastUtil.toastShort(context, "来自动态下发的so=" + msg);
 
-        /*ReLinker.loadLibrary(this, "nonostub", new ReLinker.LoadListener() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void success() {
-                String msg = new com.nono.lite.MainActivity().getStringFromNative();
-                Log.d("dq", "getNativeResult=" + msg);
-                ToastUtil.toastShort(context, "from noonstub.so=" + msg);
+            public void run() {
+                Snackbar.make(fab, "来自动态下发的so：" + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
-
-            @Override
-            public void failure(Throwable t) {
-                Log.d("dq", "load so failed " + t.toString());
-                ToastUtil.toastShort(context, "load so failed " + t.toString());
-            }
-        });*/
+        });
     }
-
-    public native String getStringFromCPP();//本类native方法
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

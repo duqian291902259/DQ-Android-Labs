@@ -1,7 +1,7 @@
 package com.nono.lite;
 
 /**
- * description:第三方so库定义
+ * description:模拟一个，第三方so库定义，命名不规范，随便搞搞
  *
  * @author 杜小菜 Created on 2019-05-06 - 20:37.
  * E-mail:duqian2010@gmail.com
