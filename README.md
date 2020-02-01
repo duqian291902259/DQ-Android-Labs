@@ -5,6 +5,8 @@ Contains various magical modules with cool tech in the future.such as soloader..
 
 New modules are being updated...
 
+### 1，gifplayer，NDK实现gif图片解析&播放
+Github-->: [C++图片解析&ImageView播放](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/gifplayer/)
 
 ### 1，SoLoader，android动态加载so库
 Github-->: [The best SoLoader for android](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/soloader/)
