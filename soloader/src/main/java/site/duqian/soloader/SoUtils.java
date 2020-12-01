@@ -60,7 +60,7 @@ public class SoUtils {
             AssetManager assetManager = context.getAssets();
             String[] files = context.getAssets().list(fromAssetPath);
             if (isExist(toPath)) {
-                deleteFile(toPath);
+                //deleteFile(toPath);//很危险
             } else {
                 new File(toPath).mkdirs();
             }

@@ -151,77 +151,18 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        //简单搞个后台线程,copy so,由于系统对assets目录的文件大小有限制，copy会失败， 请手动将assets目录的libs文件夹，拷贝到sdcard根目录
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //isSoExist = SoUtils.copyAssetsDirectory(context, "libs", sdcardLibDir);
-                copyAssetsToSDCard(context, "libs", sdcardLibDir);
-                Log.d("dq-so", "sdcardLibDir=" + sdcardLibDir + "，copy from assets " + isSoExist);
+        //简单搞个后台线程,copy so,如果copy会失败， 请手动将assets目录的libs文件夹，拷贝到sdcard根目录
+        new Thread(() -> {
+            isSoExist = SoUtils.copyAssetsDirectory(context, "libs", sdcardLibDir+"/libs");
+            //SoUtils.copyAssetsToSDCard(context, "libs", sdcardLibDir);
+            Log.d("dq-so", "sdcardLibDir=" + sdcardLibDir + "，copy from assets " + isSoExist);
+            if (isSoExist) {
+                ToastUtil.toastShort(context, "start copy so..please wait...");
                 realLoadSoFile();
-                //ToastUtil.toastShort(context, "如果拷贝so失败，请手动将assets目录的libs文件夹，拷贝到sdcard根目录");
+            } else {
+                ToastUtil.toastShort(context, "如果拷贝so失败，请手动将assets目录的libs文件夹，拷贝到sdcard根目录");
             }
         }).start();
-    }
-
-    /**
-     * 将assets下的文件放到sd指定目录下
-     *
-     * @param context    上下文
-     * @param assetsPath assets下的路径
-     * @param sdCardPath sd卡的路径
-     */
-    public void copyAssetsToSDCard(Context context, String assetsPath, String sdCardPath) {
-        Log.d("dq-so", "assetsPath=" + assetsPath + ",sdCardPath=" + sdCardPath);
-        AssetManager assetManager = context.getAssets();
-        InputStream is = null;
-        FileOutputStream fos = null;
-        try {
-            String[] files = assetManager.list(assetsPath);
-            if (files == null || files.length == 0) {
-                // 说明assetsPath为空,或者assetsPath是一个文件
-                is = assetManager.open(assetsPath);
-                byte[] mByte = new byte[1024];
-                int bt = 0;
-                File file = new File(sdCardPath);//+ File.separator+ assetsPath.substring(assetsPath.lastIndexOf('/'))
-                if (!file.exists()) {
-                    if (file.isDirectory()) {
-                        file.mkdirs();
-                    } else {
-                        boolean mkdirs = file.getParentFile().mkdirs();
-                        Log.d("dq-so", "mkdirs=" + mkdirs + ",sdCardPath=" + sdCardPath);
-                        try {
-                            file.createNewFile();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                fos = new FileOutputStream(file);
-                // assets为文件,从文件中读取流
-                while ((bt = is.read(mByte)) != -1) {
-                    fos.write(mByte, 0, bt);
-                }
-                fos.flush();
-            } else {
-                // 文件夹，进行递归
-                for (String stringFile : files) {
-                    String absolutePath = assetsPath + File.separator + stringFile;
-                    copyAssetsToSDCard(context, absolutePath, sdcardLibDir + File.separator + absolutePath);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // 关闭流
-            try {
-                is.close();
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
