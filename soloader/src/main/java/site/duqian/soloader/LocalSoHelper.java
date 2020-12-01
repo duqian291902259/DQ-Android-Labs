@@ -136,7 +136,7 @@ public class LocalSoHelper {
             fosfrom.close();
             return true;
         } catch (Exception e) {
-            Log.d("dq", "copySdcardFile error " + e);
+            Log.d("dq-so", "copySdcardFile error " + e);
         }
         return false;
     }

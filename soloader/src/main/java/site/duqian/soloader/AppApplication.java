@@ -1,6 +1,8 @@
 package site.duqian.soloader;
 
 import android.app.Application;
+import android.content.Context;
+
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
@@ -12,10 +14,12 @@ import java.io.File;
  * E-mail:duqian2010@gmail.com
  */
 public class AppApplication extends Application {
+    public static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext = this;
         try {
             initBugly();
             //动态加载x86的so文件，提前注入so本地路径，只需要注入一次，后续copy或者下载完so文件后再加载。demo方便测试才后续再次注入

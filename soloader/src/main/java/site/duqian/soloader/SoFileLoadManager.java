@@ -31,7 +31,7 @@ public class SoFileLoadManager {
             }
             LoadLibraryUtil.installNativeLibraryPath(context.getApplicationContext().getClassLoader(), dir);
         } catch (Throwable throwable) {
-            Log.e("dq", "loadSoFile error " + throwable.getMessage());
+            Log.e("dq-so", "loadSoFile error " + throwable.getMessage());
         }
     }
 

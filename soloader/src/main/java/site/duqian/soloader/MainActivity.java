@@ -5,16 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +26,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import site.duqian.so.loader.R;
+
 
 /**
  * description:1，so动态加载demo，2，用于测试google官方android app bundle
@@ -40,7 +48,7 @@ import site.duqian.so.loader.R;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1000;
-    private final String sdcardLibDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/libs";
+    private final String sdcardLibDir = Environment.getExternalStorageDirectory().getAbsolutePath();// + "/libs";
     private Context context;
     private FloatingActionButton fab;
 
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 //4，此处测试随apk安装的so库，系统加载的，无需动态加载，apk安装时就有的
                 System.loadLibrary("sostub");//工程自带的so
                 final String msg = getStringFromCPP();
-                Log.d("dq", "工程自带的cpp代码方法=" + msg);
+                Log.d("dq-so", "工程自带的cpp代码方法=" + msg);
                 Snackbar.make(view, "test工程自带的so：" + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 ToastUtil.toastShort(context, "工程自带的cpp=" + msg);
             }
@@ -118,14 +126,16 @@ public class MainActivity extends AppCompatActivity {
         final boolean delete = SoUtils.deleteFile(sdcardLibDir);
         String privateDir = context.getDir("libs", Context.MODE_PRIVATE).getAbsolutePath();
         final boolean delete2 = SoUtils.deleteFile(privateDir);
-        Log.d("dq", "delete all so=" + delete + ",delete private dir=" + delete2);
+        Log.d("dq-so", "delete all so=" + delete + ",delete private dir=" + delete2);
         isSoExist = !delete;
     }
 
 
     private void applyForPermissions() {//申请sdcard读写权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            boolean hasWritePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            boolean hasReadPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            if (!hasWritePermission || !hasReadPermission) {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         }
@@ -134,26 +144,85 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSoExist = false;
 
     private void copyAssetsFile() {//将so拷贝到sdcard
-        final String soTest = sdcardLibDir + "/x86/libnonostub.so";
+        final String soTest = sdcardLibDir + "/libs/x86/libnonostub.so";
         if (new File(soTest).exists()) {
             isSoExist = true;
             realLoadSoFile();//直接加载显示，修复第一次点击不加载的问题
             return;
         }
-        ToastUtil.toastShort(context, "copying so from Assets ");
 
-        AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+        //简单搞个后台线程,copy so,由于系统对assets目录的文件大小有限制，copy会失败， 请手动将assets目录的libs文件夹，拷贝到sdcard根目录
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                isSoExist = SoUtils.copyAssetsDirectory(context, "libs", sdcardLibDir);
-                Log.d("dq", "sdcardLibDir=" + sdcardLibDir + "，copy from assets " + isSoExist);
-                if (isSoExist) {
-                    realLoadSoFile();
-                }
+                //isSoExist = SoUtils.copyAssetsDirectory(context, "libs", sdcardLibDir);
+                copyAssetsToSDCard(context, "libs", sdcardLibDir);
+                Log.d("dq-so", "sdcardLibDir=" + sdcardLibDir + "，copy from assets " + isSoExist);
+                realLoadSoFile();
+                //ToastUtil.toastShort(context, "如果拷贝so失败，请手动将assets目录的libs文件夹，拷贝到sdcard根目录");
             }
-        });
+        }).start();
     }
 
+    /**
+     * 将assets下的文件放到sd指定目录下
+     *
+     * @param context    上下文
+     * @param assetsPath assets下的路径
+     * @param sdCardPath sd卡的路径
+     */
+    public void copyAssetsToSDCard(Context context, String assetsPath, String sdCardPath) {
+        Log.d("dq-so", "assetsPath=" + assetsPath + ",sdCardPath=" + sdCardPath);
+        AssetManager assetManager = context.getAssets();
+        InputStream is = null;
+        FileOutputStream fos = null;
+        try {
+            String[] files = assetManager.list(assetsPath);
+            if (files == null || files.length == 0) {
+                // 说明assetsPath为空,或者assetsPath是一个文件
+                is = assetManager.open(assetsPath);
+                byte[] mByte = new byte[1024];
+                int bt = 0;
+                File file = new File(sdCardPath);//+ File.separator+ assetsPath.substring(assetsPath.lastIndexOf('/'))
+                if (!file.exists()) {
+                    if (file.isDirectory()) {
+                        file.mkdirs();
+                    } else {
+                        boolean mkdirs = file.getParentFile().mkdirs();
+                        Log.d("dq-so", "mkdirs=" + mkdirs + ",sdCardPath=" + sdCardPath);
+                        try {
+                            file.createNewFile();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                fos = new FileOutputStream(file);
+                // assets为文件,从文件中读取流
+                while ((bt = is.read(mByte)) != -1) {
+                    fos.write(mByte, 0, bt);
+                }
+                fos.flush();
+            } else {
+                // 文件夹，进行递归
+                for (String stringFile : files) {
+                    String absolutePath = assetsPath + File.separator + stringFile;
+                    copyAssetsToSDCard(context, absolutePath, sdcardLibDir + File.separator + absolutePath);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭流
+            try {
+                is.close();
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * 在应用启动的时动态注入本地so路径path，待后期so准备好了，可以安全加载。
@@ -167,15 +236,10 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("nonostub");//系统方法也能正常加载，无法try catch住异常
         //msg是测试从assets目录拷贝的so的逻辑（模拟网络下载的某个so文件）
         final String msg = new com.nono.lite.MainActivity().getStringFromNative();
-        Log.d("dq", "来自动态下发的so=" + msg);
+        Log.d("dq-so", "来自动态下发的so=" + msg);
         ToastUtil.toastShort(context, "来自动态下发的so=" + msg);
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Snackbar.make(fab, "来自动态下发的so：" + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-            }
-        });
+        runOnUiThread(() -> Snackbar.make(fab, "来自动态下发的so：" + msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show());
     }
 
     @Override
@@ -237,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                     .getPackageManager()
                     .getPackageInfo(ctx.getPackageName(), 0);
             localVersion = packageInfo.versionCode;
-            Log.d("dq", "version：" + localVersion);
+            Log.d("dq-so", "version：" + localVersion);
         } catch (Exception e) {
             e.printStackTrace();
         }

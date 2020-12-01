@@ -1,46 +1,51 @@
 apply plugin: 'com.android.application'
 //这里是本人的签名配置，运行前请去掉
+/*
 Properties props = new Properties()
 props.load(new FileInputStream(file("../local.properties")))
+*/
 
 android {
-    signingConfigs {
+    /*signingConfigs {
         release {
             keyAlias props['KEY_ALIAS']
             keyPassword props['KEY_PASSWORD']
             storeFile file(props['KEYSTORE_FILE'])
             storePassword props['KEYSTORE_PASSWORD']
         }
-    }
-    //⤴️这里是本人的签名配置，运行前请去掉
+    }*/
 
-    compileSdkVersion 29
-
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "site.duqian.so.loader"
-        minSdkVersion 18
-        targetSdkVersion 29
+        minSdkVersion 19
+        targetSdkVersion 30
         versionCode 8
         versionName "1.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 
@@ -65,14 +70,14 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            //minifyEnabled true
             proguardFiles 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
         release {
-            minifyEnabled true
+            //minifyEnabled true
             proguardFiles 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 
