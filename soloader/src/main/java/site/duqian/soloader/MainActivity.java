@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void clearSoFileAndPath() {
         LoadLibraryUtil.clearSoPath(getClassLoader());
-        final boolean delete = SoUtils.deleteFile(sdcardLibDir);
+        String filePath = sdcardLibDir + "/libs";
+        final boolean delete = SoUtils.deleteFile(filePath);
         String privateDir = context.getDir("libs", Context.MODE_PRIVATE).getAbsolutePath();
         final boolean delete2 = SoUtils.deleteFile(privateDir);
         Log.d("dq-so", "delete all so=" + delete + ",delete private dir=" + delete2);
@@ -197,17 +198,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 为了重启，也是蛮拼的，所有家伙都上
+     * 为了重启
      */
     private void restartApp() {
         try {
-            final String packageName = getPackageName();//"site.duqian.so.loader"
+            final String packageName = getPackageName();
             Intent k = context.getPackageManager().getLaunchIntentForPackage(packageName);
             if (k != null) {
                 k.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             }
             context.startActivity(k);
-
             android.os.Process.killProcess(android.os.Process.myPid());
             //System.exit(0);
         } catch (Exception e) {

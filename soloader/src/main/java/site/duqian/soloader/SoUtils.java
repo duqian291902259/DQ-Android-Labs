@@ -101,6 +101,9 @@ public class SoUtils {
         if (TextUtils.isEmpty(filePath)) {
             return false;
         }
+        if (Environment.getExternalStorageDirectory().getAbsolutePath().equals(filePath)) {
+            return false;//防止直接删除了sdcard根目录
+        }
         try {
             File f = new File(filePath);
             if (f.exists() && f.isDirectory()) {
