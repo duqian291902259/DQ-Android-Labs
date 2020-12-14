@@ -54,21 +54,9 @@ public class LoadLibraryUtil {
         final int sdkInt = Build.VERSION.SDK_INT;
         final boolean aboveM = (sdkInt == 25 && getPreviousSdkInt() != 0) || sdkInt > 25;
         if (aboveM) {
-            try {
-                V25.install(classLoader, folder);
-            } catch (Throwable throwable) {
-                try {
-                    V23.install(classLoader, folder);
-                } catch (Throwable throwable1) {
-                    V14.install(classLoader, folder);
-                }
-            }
+            V25.install(classLoader, folder);
         } else if (sdkInt >= 23) {
-            try {
-                V23.install(classLoader, folder);
-            } catch (Throwable throwable) {
-                V14.install(classLoader, folder);
-            }
+            V23.install(classLoader, folder);
         } else if (sdkInt >= 14) {
             V14.install(classLoader, folder);
         }
@@ -170,7 +158,6 @@ public class LoadLibraryUtil {
         private static void install(ClassLoader classLoader, File folder) throws Throwable {
             Field pathListField = ReflectUtil.findField(classLoader, "pathList");
             Object dexPathList = pathListField.get(classLoader);
-
             ReflectUtil.expandFieldArray(dexPathList, "nativeLibraryDirectories", new File[]{folder});
         }
     }
