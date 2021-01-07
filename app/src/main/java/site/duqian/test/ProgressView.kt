@@ -5,6 +5,7 @@ import android.graphics.*
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 /**
@@ -60,7 +61,6 @@ class ProgressView : View {
     }
 
     private fun init(attrs: AttributeSet?, defStyle: Int) {
-        // Load attributes
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.ProgressView, defStyle, 0
         )
@@ -99,7 +99,7 @@ class ProgressView : View {
         //字体绘制的位置控制
         fontMetrics = mTextPaint.fontMetrics
         if (mProgress != 0f) {
-            startAnim()
+            updateProgressAndText()
         }
         isTextNotEmpty = !TextUtils.isEmpty(text)
         if (isTextNotEmpty) invalidateTextPaint()
@@ -114,12 +114,32 @@ class ProgressView : View {
         //宽高中较小的一边
         smaller = if (centreWidth > centreHeight) centreHeight * 2 else centreWidth * 2
         when (progressShape) {
-            PROGRESS_RECTANGLE, PROGRESS_OVAL ->
-                rect[strokeSize.toFloat(), strokeSize.toFloat(), (centreWidth * 2 - strokeSize).toFloat()] =
+            PROGRESS_RECTANGLE, PROGRESS_OVAL -> {
+                rect.set(
+                    strokeSize.toFloat(),
+                    strokeSize.toFloat(),
+                    (centreWidth * 2 - strokeSize).toFloat(),
                     (centreHeight * 2 - strokeSize).toFloat()
-            PROGRESS_SQUARE -> rect[(centreWidth - smaller / 2 + strokeSize).toFloat(),
-                    (centreHeight - smaller / 2 + strokeSize).toFloat(), (centreWidth + smaller / 2 - strokeSize).toFloat()] =
-                (centreHeight + smaller / 2 - strokeSize).toFloat()
+                )
+            }
+
+            PROGRESS_SQUARE -> {
+                rect.set(
+                    (centreWidth - smaller / 2 + strokeSize).toFloat(),
+                    (centreHeight - smaller / 2 + strokeSize).toFloat(),
+                    (centreWidth + smaller / 2 - strokeSize).toFloat(),
+                    (centreHeight + smaller / 2 - strokeSize).toFloat()
+                )
+            }
+
+            PROGRESS_ROUND_RECTANGLE -> {
+                rect.set(
+                    strokeSize.toFloat(),
+                    strokeSize.toFloat(),
+                    (centreWidth * 2 - strokeSize).toFloat(),
+                    (centreHeight * 2 - strokeSize).toFloat()
+                )
+            }
             else -> {
             }
         }
@@ -140,13 +160,6 @@ class ProgressView : View {
                     (smaller / 2 - strokeSize).toFloat(),
                     Path.Direction.CW
                 )
-                if (isTextNotEmpty) //绘制文字
-                    canvas.drawText(
-                        text!!,
-                        centreWidth - textWidth / 2 + strokeSize,
-                        mVerticalY,
-                        mTextPaint
-                    )
             }
             PROGRESS_RECTANGLE, PROGRESS_SQUARE -> {
                 mPath.addRoundRect(
@@ -155,27 +168,34 @@ class ProgressView : View {
                     smaller / rounded,
                     Path.Direction.CW
                 )
-                if (isTextNotEmpty) canvas.drawText(
-                    text!!,
-                    centreWidth - textWidth / 2 + strokeSize,
-                    mVerticalY,
-                    mTextPaint
-                )
             }
             PROGRESS_OVAL -> {
-                mPath.addOval(rect!!, Path.Direction.CW)
-                if (isTextNotEmpty) canvas.drawText(
-                    text!!,
-                    centreWidth - textWidth / 2 + strokeSize,
-                    mVerticalY,
-                    mTextPaint
+                mPath.addOval(rect, Path.Direction.CW)
+            }
+            PROGRESS_ROUND_RECTANGLE -> {
+                //mPath.addOval(rect, Path.Direction.CW)
+                mPath.addRoundRect(
+                    rect,
+                    smaller / 1.0f,
+                    smaller / 1.0f,
+                    Path.Direction.CW
                 )
             }
             else -> {
             }
         }
+
+        if (isTextNotEmpty) {
+            canvas.drawText(
+                text!!,
+                centreWidth - textWidth / 2 + strokeSize,
+                mVerticalY,
+                mTextPaint
+            )
+        }
         canvas.drawPath(mPath, mPaintGray)
-        //        mPath.addCircle(width/2,height/2,50, Path.Direction.CW);
+
+        //mPath.addCircle((width / 2).toFloat(), (height / 2).toFloat(), 50f, Path.Direction.CW)
         // 将mPath和mPathMeasure关联起来
         mPathMeasure.setPath(mPath, true)
         val mLength = mPathMeasure.length
@@ -183,22 +203,21 @@ class ProgressView : View {
         // 每次重新绘制之前将mDest重置
         mDest.reset()
         mDest.lineTo(0f, 0f)
+        val mStart = 0f//measuredWidth / 2.0f // 0f todo-dq 起始坐标位置
         val mStop = mFloatPos * mLength
         // 截取mPath中从mStart起点到mStop终点的片段，到mDest里
-        val mStart = 0f
         mPathMeasure.getSegment(mStart, mStop, mDest, true)
         // 最终绘制的是截取之后的mDest
         canvas.drawPath(mDest, mPaint)
-
-        // Draw the text.
     }
 
-    private fun startAnim() {
+    private fun updateProgressAndText() {
         if (mProgress > 1) {
             mProgress /= 100
         }
         mFloatPos = mProgress
         text = "${(mFloatPos * 100).toInt()} %"
+        Log.d("dq-pb", "" + text)
         if (isTextNotEmpty) { //字体宽度
             textWidth = mTextPaint.measureText(text)
             fontMetrics?.apply {
@@ -214,7 +233,7 @@ class ProgressView : View {
 
     fun setProgress(progress: Float) {
         this.mProgress = progress
-        startAnim()
+        updateProgressAndText()
     }
 
     fun getProgressShape(): Int {
@@ -223,7 +242,7 @@ class ProgressView : View {
 
     fun setProgressShape(progressShape: Int) {
         this.progressShape = progressShape
-        startAnim()
+        updateProgressAndText()
     }
 
     companion object {
@@ -232,5 +251,6 @@ class ProgressView : View {
         const val PROGRESS_RECTANGLE = 1
         const val PROGRESS_OVAL = 2
         const val PROGRESS_SQUARE = 3
+        const val PROGRESS_ROUND_RECTANGLE = 4
     }
 }

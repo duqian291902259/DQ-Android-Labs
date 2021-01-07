@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mProgressView: ProgressView
+    private lateinit var mProgressView2: ProgressView
     private var mProgress = 1f
     private val mHandler: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             super.handleMessage(msg)
             if (mProgress <= 100) {
                 mProgressView.setProgress(mProgress)
+                mProgressView2.setProgress(mProgress)
                 mProgress++
                 Log.d("dq-pb", "progress=$mProgress")
             } else {
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         //setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
 
         mProgressView = findViewById(R.id.progressView)
+        mProgressView2 = findViewById(R.id.progressView2)
+
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Just a demo from duqian2010@gmail.com", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -45,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         mHandler.postDelayed({
             mProgressView.setProgress(mProgress)
+            mProgressView2.setProgress(mProgress)
             mProgress++
             Log.d("dq-pb", "progress1=$mProgress")
             mHandler.sendEmptyMessageDelayed(100, 1000)

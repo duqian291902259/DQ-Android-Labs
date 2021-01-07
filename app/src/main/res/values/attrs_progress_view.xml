@@ -14,6 +14,8 @@
             <enum name="oval" value="2" />
             <!--正方形-->
             <enum name="square" value="3" />
+            <!--左右为圆，中间为矩形-->
+            <enum name="round_rectangle" value="4" />
         </attr>
     </declare-styleable>
 </resources>

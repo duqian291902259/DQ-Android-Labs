@@ -36,12 +36,25 @@
     <site.duqian.test.ProgressView
         android:id="@+id/progressView"
         android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         app:borderColor="@color/borderColor"
         app:progress="70"
         app:progressShape="rectangle"
+        app:textColor="@color/textColor"
+        app:textDimension="11sp"
+        />
+
+    <site.duqian.test.ProgressView
+        android:id="@+id/progressView2"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        app:borderColor="@color/borderColor"
+        app:progress="0"
+        app:progressShape="round_rectangle"
         app:textColor="@color/textColor"
         app:textDimension="11sp" />
 
