@@ -1,0 +1,19 @@
+<resources>
+    <declare-styleable name="ProgressView">
+        <attr name="textProgress" format="string" />
+        <attr name="textDimension" format="dimension" />
+        <attr name="progress" format="float" />
+        <attr name="textColor" format="color" />
+        <attr name="borderColor" format="color" />
+        <attr name="progressShape">
+            <!--圆形-->
+            <enum name="round" value="0" />
+            <!--矩形-->
+            <enum name="rectangle" value="1" />
+            <!--椭圆-->
+            <enum name="oval" value="2" />
+            <!--正方形-->
+            <enum name="square" value="3" />
+        </attr>
+    </declare-styleable>
+</resources>

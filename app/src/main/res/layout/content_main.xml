@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:elevation="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimary"
+    android:paddingTop="50dp"
+    android:orientation="vertical">
 
     <RelativeLayout
-            android:layout_marginTop="50dp"
-            android:id="@+id/rl_demo1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@android:drawable/dialog_holo_light_frame"
-            android:layout_margin="30dp"
-            android:translationZ="10dp"
-            android:elevation="20dp">
+        android:id="@+id/rl_demo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:layout_marginTop="50dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:elevation="20dp"
+        android:translationZ="10dp"
+        android:visibility="visible">
 
         <TextView
-                android:id="@+id/tv_demo1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:text="Elevation 20dp"
-                android:elevation="30dp"
-                android:translationZ="10dp"
-                android:textSize="30sp"/>
+            android:id="@+id/tv_demo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:elevation="30dp"
+            android:text="Elevation 20dp"
+            android:textSize="30sp"
+            android:translationZ="10dp" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <site.duqian.test.ProgressView
+        android:id="@+id/progressView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        app:borderColor="@color/borderColor"
+        app:progress="70"
+        app:progressShape="rectangle"
+        app:textColor="@color/textColor"
+        app:textDimension="11sp" />
+
+</LinearLayout>

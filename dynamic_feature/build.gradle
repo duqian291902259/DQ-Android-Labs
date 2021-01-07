@@ -1,16 +1,32 @@
 apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
     defaultConfig {
+        applicationId = "site.duqian.dynamic_feature"
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':soloader')
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
+
 }

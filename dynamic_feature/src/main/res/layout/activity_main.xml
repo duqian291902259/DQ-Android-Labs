@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test dynamic feature" />
+    <!--
+        <com.duqian.progress.ProgressView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:borderColor="@color/borderColor"
+            app:progress="0.5"
+            app:progressShape="round"
+            app:textColor="@color/textColor"
+            app:textDimension="11sp" />
+
+        <com.duqian.progress.ProgressView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:borderColor="@color/borderColor"
+            app:progress="60"
+            app:progressShape="square"
+            app:textColor="@color/textColor"
+            app:textDimension="11sp" />
+
+
+        <com.duqian.progress.ProgressView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:borderColor="@color/borderColor"
+            app:progress="70"
+            app:progressShape="rectangle"
+            app:textColor="@color/textColor"
+            app:textDimension="11sp" />
+
+
+        <com.duqian.progress.ProgressView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:borderColor="@color/borderColor"
+            app:progress="100"
+            app:progressShape="oval"
+            app:textColor="@color/textColor"
+            app:textDimension="11sp" />-->
+</LinearLayout>

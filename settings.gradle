@@ -1,1 +1,2 @@
-include ':app', ':soloader', ':dynamic_feature', ':gifplayer'
+include ':app', ':soloader', ':gifplayer'  //, ':dynamic_feature'
+include ':dynamic_feature'
