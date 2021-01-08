@@ -24,9 +24,10 @@ class ProgressView : View {
     private val mPathMeasure = PathMeasure()
     private var mFloatPos = 0f
     private var mProgress = 0f
-    private var text: String? = null// 进度条文本
-    private var textColor = Color.BLACK // 进度条文本字体颜色
-    private var borderColor = Color.BLUE //边界颜色
+    private var textProgress: String? = null// 进度条文本
+    private var textColor = Color.WHITE // 进度条文本字体颜色
+    private var firstPbColor = Color.GRAY //进度条底层颜色
+    private var secondPbColor = Color.WHITE // 进度条上层颜色
     private var textDimen = 0f // 进度条文本字体大小
     private lateinit var mTextPaint: TextPaint
     private var progressShape = 0
@@ -64,14 +65,17 @@ class ProgressView : View {
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.ProgressView, defStyle, 0
         )
-        text = a.getString(
+        textProgress = a.getString(
             R.styleable.ProgressView_textProgress
         )
         textColor = a.getColor(
             R.styleable.ProgressView_textColor, textColor
         )
-        borderColor = a.getColor(
-            R.styleable.ProgressView_borderColor, textColor
+        firstPbColor = a.getColor(
+            R.styleable.ProgressView_firstPbColor, firstPbColor
+        )
+        secondPbColor = a.getColor(
+            R.styleable.ProgressView_secondPbColor, secondPbColor
         )
         strokeSize = a.getDimension(
             R.styleable.ProgressView_strokeSize, strokeSize
@@ -88,13 +92,15 @@ class ProgressView : View {
         a.recycle()
         mPath = Path()
         mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mPaint.color = textColor
+        mPaint.color = secondPbColor
         mPaint.strokeWidth = strokeSize
         mPaint.style = Paint.Style.STROKE
+
         mPaintGray = Paint(Paint.ANTI_ALIAS_FLAG)
-        mPaintGray.color = borderColor
+        mPaintGray.color = firstPbColor
         mPaintGray.strokeWidth = strokeSize
         mPaintGray.style = Paint.Style.STROKE
+
         mTextPaint = TextPaint()
         mTextPaint.flags = Paint.ANTI_ALIAS_FLAG
         mTextPaint.textAlign = Paint.Align.LEFT
@@ -104,7 +110,7 @@ class ProgressView : View {
         if (mProgress != 0f) {
             updateProgressAndText()
         }
-        isTextNotEmpty = !TextUtils.isEmpty(text)
+        isTextNotEmpty = !TextUtils.isEmpty(textProgress)
         if (isTextNotEmpty) invalidateTextPaint()
     }
 
@@ -189,7 +195,7 @@ class ProgressView : View {
 
         if (isTextNotEmpty) {
             canvas.drawText(
-                text!!,
+                textProgress!!,
                 centreWidth - textWidth / 2 + strokeSize,
                 mVerticalY,
                 mTextPaint
@@ -201,12 +207,15 @@ class ProgressView : View {
         mPathMeasure.setPath(mPath, true)
         val mLength = mPathMeasure.length
 
-        //每次重新绘制之前将mDest重置
+        //重置
         mDest.reset()
         mDest.lineTo(0f, 0f)
-        val mStart = 0f //if (mFloatPos > 1) 0f else measuredWidth / 2.0f // todo-dq 起始坐标位置
-        val mStop = mFloatPos * mLength + mStart
-        // 截取mPath中从mStart起点到mStop终点的片段，到mDest里
+        //val isEnd = mFloatPos > 1 - PROGRESS_START
+        val mStart = 0f//if (isEnd) 0f else measuredWidth / 1.8f // 调整起始绘制的位置
+        val mStop =
+            mFloatPos * mLength //if (isEnd) (mFloatPos - 1) * mLength else (mFloatPos - PROGRESS_START) * mLength
+
+        // 截取
         mPathMeasure.getSegment(mStart, mStop, mDest, true)
         canvas.drawPath(mDest, mPaint)
     }
@@ -216,10 +225,13 @@ class ProgressView : View {
             mProgress /= 100
         }
         mFloatPos = mProgress
-        text = "${(mFloatPos * 100).toInt()} %"
+        textProgress = "${(mFloatPos * 100).toInt()} %"
+
+        //实际起始位置 mFloatPos = mProgress + PROGRESS_START
+
         isTextNotEmpty = true
-        Log.d("dq-pb-$TAG", "" + text)
-        textWidth = mTextPaint.measureText(text)
+        Log.d("dq-pb-$TAG", "" + textProgress)
+        textWidth = mTextPaint.measureText(textProgress)
         fontMetrics?.apply {
             mVerticalY = centreHeight + (this.descent - this.ascent) / 2 - this.descent
         }
@@ -233,6 +245,7 @@ class ProgressView : View {
 
     companion object {
         private val TAG = ProgressView::class.java.simpleName
+        const val PROGRESS_START = 0.3f
         const val PROGRESS_ROUND = 0
         const val PROGRESS_RECTANGLE = 1
         const val PROGRESS_OVAL = 2

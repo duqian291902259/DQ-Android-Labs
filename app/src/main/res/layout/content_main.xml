@@ -39,11 +39,12 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        app:borderColor="@color/borderColor"
+        app:firstPbColor="@color/borderColor"
         app:progress="70"
         app:progressShape="rectangle"
+        app:secondPbColor="@color/textColor"
         app:textColor="@color/textColor"
-        app:textDimension="11sp"
+        app:textDimension="13sp"
         android:visibility="visible"
         />
 
@@ -53,10 +54,11 @@
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        app:borderColor="#ccc"
+        app:firstPbColor="#1E1926"
         app:progress="0"
         app:progressShape="round_rectangle"
         app:textColor="#FFFFFF"
+        app:secondPbColor="#FFFFFF"
         app:strokeSize="3dp"
         app:textDimension="15sp" />
 
