@@ -30,11 +30,11 @@ class ProgressView : View {
     private var textDimen = 0f // 进度条文本字体大小
     private lateinit var mTextPaint: TextPaint
     private var progressShape = 0
-    private var strokeSize = 5 //描边宽度
+    private var strokeSize = 5f //描边宽度
     private val rounded = 8f
-    private var centreHeight = 0
-    private var centreWidth = 0
-    private var smaller = 0
+    private var centreHeight = 0f
+    private var centreWidth = 0f
+    private var smaller = 0f
     private var textWidth = 0f
     private var rect: RectF = RectF()
     private var isTextNotEmpty = false
@@ -73,6 +73,9 @@ class ProgressView : View {
         borderColor = a.getColor(
             R.styleable.ProgressView_borderColor, textColor
         )
+        strokeSize = a.getDimension(
+            R.styleable.ProgressView_strokeSize, strokeSize
+        )
         textDimen = a.getDimension(
             R.styleable.ProgressView_textDimension, textDimen
         )
@@ -86,11 +89,11 @@ class ProgressView : View {
         mPath = Path()
         mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         mPaint.color = textColor
-        mPaint.strokeWidth = strokeSize.toFloat()
+        mPaint.strokeWidth = strokeSize
         mPaint.style = Paint.Style.STROKE
         mPaintGray = Paint(Paint.ANTI_ALIAS_FLAG)
         mPaintGray.color = borderColor
-        mPaintGray.strokeWidth = 5f
+        mPaintGray.strokeWidth = strokeSize
         mPaintGray.style = Paint.Style.STROKE
         mTextPaint = TextPaint()
         mTextPaint.flags = Paint.ANTI_ALIAS_FLAG
@@ -108,36 +111,36 @@ class ProgressView : View {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         //获取中心的x坐标
-        centreWidth = measuredWidth / 2
+        centreWidth = measuredWidth / 2.0f
         //获取中心的y坐标
-        centreHeight = measuredHeight / 2
+        centreHeight = measuredHeight / 2.0f
         //宽高中较小的一边
-        smaller = if (centreWidth > centreHeight) centreHeight * 2 else centreWidth * 2
+        smaller = if (centreWidth > centreHeight) centreHeight * 2.0f else centreWidth * 2.0f
         when (progressShape) {
             PROGRESS_RECTANGLE, PROGRESS_OVAL -> {
                 rect.set(
-                    strokeSize.toFloat(),
-                    strokeSize.toFloat(),
-                    (centreWidth * 2 - strokeSize).toFloat(),
-                    (centreHeight * 2 - strokeSize).toFloat()
+                    strokeSize,
+                    strokeSize,
+                    centreWidth * 2 - strokeSize,
+                    centreHeight * 2 - strokeSize
                 )
             }
 
             PROGRESS_SQUARE -> {
                 rect.set(
-                    (centreWidth - smaller / 2 + strokeSize).toFloat(),
-                    (centreHeight - smaller / 2 + strokeSize).toFloat(),
-                    (centreWidth + smaller / 2 - strokeSize).toFloat(),
-                    (centreHeight + smaller / 2 - strokeSize).toFloat()
+                    centreWidth - smaller / 2 + strokeSize,
+                    centreHeight - smaller / 2 + strokeSize,
+                    centreWidth + smaller / 2 - strokeSize,
+                    centreHeight + smaller / 2 - strokeSize
                 )
             }
 
             PROGRESS_ROUND_RECTANGLE -> {
                 rect.set(
-                    strokeSize.toFloat(),
-                    strokeSize.toFloat(),
-                    (centreWidth * 2 - strokeSize).toFloat(),
-                    (centreHeight * 2 - strokeSize).toFloat()
+                    strokeSize,
+                    strokeSize,
+                    centreWidth * 2 - strokeSize,
+                    centreHeight * 2 - strokeSize
                 )
             }
             else -> {
@@ -155,9 +158,9 @@ class ProgressView : View {
         when (progressShape) {
             PROGRESS_ROUND -> {
                 mPath.addCircle(
-                    centreWidth.toFloat(),
-                    centreHeight.toFloat(),
-                    (smaller / 2 - strokeSize).toFloat(),
+                    centreWidth,
+                    centreHeight,
+                    smaller / 2 - strokeSize,
                     Path.Direction.CW
                 )
             }
@@ -173,7 +176,6 @@ class ProgressView : View {
                 mPath.addOval(rect, Path.Direction.CW)
             }
             PROGRESS_ROUND_RECTANGLE -> {
-                //mPath.addOval(rect, Path.Direction.CW)
                 mPath.addRoundRect(
                     rect,
                     smaller / 1.0f,
@@ -195,19 +197,17 @@ class ProgressView : View {
         }
         canvas.drawPath(mPath, mPaintGray)
 
-        //mPath.addCircle((width / 2).toFloat(), (height / 2).toFloat(), 50f, Path.Direction.CW)
-        // 将mPath和mPathMeasure关联起来
+        //将mPath和mPathMeasure关联起来
         mPathMeasure.setPath(mPath, true)
         val mLength = mPathMeasure.length
 
-        // 每次重新绘制之前将mDest重置
+        //每次重新绘制之前将mDest重置
         mDest.reset()
         mDest.lineTo(0f, 0f)
-        val mStart = 0f//measuredWidth / 2.0f // 0f todo-dq 起始坐标位置
-        val mStop = mFloatPos * mLength
+        val mStart = 0f //if (mFloatPos > 1) 0f else measuredWidth / 2.0f // todo-dq 起始坐标位置
+        val mStop = mFloatPos * mLength + mStart
         // 截取mPath中从mStart起点到mStop终点的片段，到mDest里
         mPathMeasure.getSegment(mStart, mStop, mDest, true)
-        // 最终绘制的是截取之后的mDest
         canvas.drawPath(mDest, mPaint)
     }
 
@@ -217,31 +217,17 @@ class ProgressView : View {
         }
         mFloatPos = mProgress
         text = "${(mFloatPos * 100).toInt()} %"
-        Log.d("dq-pb", "" + text)
-        if (isTextNotEmpty) { //字体宽度
-            textWidth = mTextPaint.measureText(text)
-            fontMetrics?.apply {
-                mVerticalY = centreHeight + (this.descent - this.ascent) / 2 - this.descent
-            }
+        isTextNotEmpty = true
+        Log.d("dq-pb-$TAG", "" + text)
+        textWidth = mTextPaint.measureText(text)
+        fontMetrics?.apply {
+            mVerticalY = centreHeight + (this.descent - this.ascent) / 2 - this.descent
         }
         invalidate()
     }
 
-    fun getProgress(): Float {
-        return mProgress
-    }
-
     fun setProgress(progress: Float) {
         this.mProgress = progress
-        updateProgressAndText()
-    }
-
-    fun getProgressShape(): Int {
-        return progressShape
-    }
-
-    fun setProgressShape(progressShape: Int) {
-        this.progressShape = progressShape
         updateProgressAndText()
     }
 

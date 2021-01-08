@@ -2,6 +2,7 @@
     <declare-styleable name="ProgressView">
         <attr name="textProgress" format="string" />
         <attr name="textDimension" format="dimension" />
+        <attr name="strokeSize" format="dimension" />
         <attr name="progress" format="float" />
         <attr name="textColor" format="color" />
         <attr name="borderColor" format="color" />
