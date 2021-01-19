@@ -234,7 +234,7 @@ class ProgressView : View {
         //Log.d("dq-pb-$TAG", "" + textProgress)
         textWidth = mTextPaint.measureText(textProgress)
         fontMetrics?.apply {
-            mVerticalY = centreHeight + (this.descent - this.ascent) / 2 - this.descent
+            mVerticalY = centreHeight + (this.descent - this.ascent) / 2 + this.descent
         }
         invalidate()
     }
