@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:elevation="30dp"
-            android:text="Elevation 20dp"
+            android:text="杜小菜Kotlin"
             android:textSize="30sp"
             android:translationZ="10dp" />
 
@@ -44,8 +44,8 @@
         app:progressShape="rectangle"
         app:secondPbColor="@color/textColor"
         app:textColor="@color/textColor"
-        app:textDimension="13sp"
-        android:visibility="visible"
+        app:textDimension="13dp"
+        android:visibility="gone"
         />
 
     <site.duqian.test.ProgressView
@@ -55,11 +55,11 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         app:firstPbColor="#1E1926"
-        app:progress="0"
+        app:progress="10"
         app:progressShape="round_rectangle"
         app:textColor="#FFFFFF"
         app:secondPbColor="#FFFFFF"
         app:strokeSize="3dp"
-        app:textDimension="15sp" />
+        app:textDimension="15dp" />
 
 </LinearLayout>

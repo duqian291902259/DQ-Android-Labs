@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.os.SystemClock
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
+import java.util.concurrent.atomic.AtomicLong
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                 mProgressView.setProgress(mProgress)
                 mProgressView2.setProgress(mProgress)
                 mProgress++
-                Log.d("dq-pb", "progress=$mProgress")
+                //Log.d("dq-pb", "progress=$mProgress")
             } else {
                 mProgress = 1f
             }
@@ -39,6 +42,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
 
+        testUI()
+        testKotlin()
+    }
+
+    companion object {
+        const val TAG = "dq-kotlin "
+    }
+
+    private fun testKotlin() {
+        val c = AtomicLong()
+        val startTimeMillis = System.currentTimeMillis()
+        println("$TAG Start $c $startTimeMillis")
+        // 启动一个协程
+        GlobalScope.launch() {//Dispathcers.Main
+            println("$TAG Hello")
+            delay(1000)
+            //同步执行
+            ioTest()
+        }
+
+        for (i in 1..1_000_000L) {//廉价的携程
+            GlobalScope.launch {
+                c.addAndGet(i)
+            }
+        }
+        Thread.sleep(500) // 等待 2 秒钟
+        println("$TAG Stop ${c.get()} duration=${System.currentTimeMillis() - startTimeMillis}")
+    }
+
+    private suspend fun ioTest() {
+        withContext(Dispatchers.IO) {
+            println("$TAG 挂起函数，子线程执行")
+        }
+    }
+
+    private fun testUI() {
         mProgressView = findViewById(R.id.progressView)
         mProgressView2 = findViewById(R.id.progressView2)
 
@@ -51,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             mProgressView.setProgress(mProgress)
             mProgressView2.setProgress(mProgress)
             mProgress++
-            Log.d("dq-pb", "progress1=$mProgress")
+            //Log.d("dq-pb", "progress1=$mProgress")
             mHandler.sendEmptyMessageDelayed(100, 1000)
         }, 1000)
     }

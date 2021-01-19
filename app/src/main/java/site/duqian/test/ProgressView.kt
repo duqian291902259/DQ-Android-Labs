@@ -28,7 +28,7 @@ class ProgressView : View {
     private var textColor = Color.WHITE // 进度条文本字体颜色
     private var firstPbColor = Color.GRAY //进度条底层颜色
     private var secondPbColor = Color.WHITE // 进度条上层颜色
-    private var textDimen = 0f // 进度条文本字体大小
+    private var textDimen = 20f // 进度条文本字体大小
     private lateinit var mTextPaint: TextPaint
     private var progressShape = 0
     private var strokeSize = 5f //描边宽度
@@ -111,7 +111,8 @@ class ProgressView : View {
             updateProgressAndText()
         }
         isTextNotEmpty = !TextUtils.isEmpty(textProgress)
-        if (isTextNotEmpty) invalidateTextPaint()
+        //if (isTextNotEmpty)
+        invalidateTextPaint()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -230,7 +231,7 @@ class ProgressView : View {
         //实际起始位置 mFloatPos = mProgress + PROGRESS_START
 
         isTextNotEmpty = true
-        Log.d("dq-pb-$TAG", "" + textProgress)
+        //Log.d("dq-pb-$TAG", "" + textProgress)
         textWidth = mTextPaint.measureText(textProgress)
         fontMetrics?.apply {
             mVerticalY = centreHeight + (this.descent - this.ascent) / 2 - this.descent
