@@ -1,2 +1,3 @@
+include ':DusanPlugin'
 include ':app', ':soloader', ':gifplayer'  //, ':dynamic_feature'
 include ':dynamic_feature'
