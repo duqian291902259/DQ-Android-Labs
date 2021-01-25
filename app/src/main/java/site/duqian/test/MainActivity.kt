@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicLong
 
@@ -112,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                 FlutterActivity
                     .withNewEngine()
                     .initialRoute("dq_flutter_page")
+                    .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     .build(this)
             )
             startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
