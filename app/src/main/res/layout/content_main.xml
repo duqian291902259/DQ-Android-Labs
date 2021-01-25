@@ -27,13 +27,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:elevation="30dp"
-            android:text="杜小菜Kotlin"
+            android:text="Kotlin/Flutter"
             android:textSize="30sp"
             android:translationZ="10dp" />
 
     </RelativeLayout>
 
-    <site.duqian.test.ProgressView
+    <!--<site.duqian.test.ProgressView
         android:id="@+id/progressView"
         android:layout_width="100dp"
         android:layout_height="40dp"
@@ -46,7 +46,7 @@
         app:textColor="@color/textColor"
         app:textDimension="13dp"
         android:visibility="gone"
-        />
+        />-->
 
     <site.duqian.test.ProgressView
         android:id="@+id/progressView2"
@@ -54,7 +54,7 @@
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        app:firstPbColor="#1E1926"
+        app:firstPbColor="#C6A9A9"
         app:progress="10"
         app:progressShape="round_rectangle"
         app:textColor="#FFFFFF"

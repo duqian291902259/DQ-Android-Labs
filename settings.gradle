@@ -1,3 +1,8 @@
 include ':DusanPlugin'
+setBinding(new Binding([gradle: this]))
+evaluate(new File(
+  settingsDir,
+  'flutter_module/.android/include_flutter.groovy'
+))
 include ':app', ':soloader', ':gifplayer'  //, ':dynamic_feature'
 include ':dynamic_feature'

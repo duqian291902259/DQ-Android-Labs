@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.os.SystemClock
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import io.flutter.embedding.android.FlutterActivity
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicLong
 
@@ -21,8 +23,12 @@ import java.util.concurrent.atomic.AtomicLong
  */
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val TAG = "dq-kotlin "
+    }
+
     private lateinit var mProgressView: ProgressView
-    private lateinit var mProgressView2: ProgressView
+    private lateinit var mTvDemo1: View
     private var mProgress = 1f
     private var mUIUtils = UIUtils()
     private val mHandler: Handler = @SuppressLint("HandlerLeak")
@@ -30,14 +36,13 @@ class MainActivity : AppCompatActivity() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if (mProgress <= 100) {
-                mProgressView.setProgress(mProgress)
                 SystemClock.sleep(500) //测试主线程卡顿
-                mProgressView2.setProgress(mProgress)
+                mProgressView.setProgress(mProgress)
                 mProgress++
             } else {
                 mProgress = 1f
             }
-            sendEmptyMessageDelayed(100, 200)
+            sendEmptyMessageDelayed(100, 1000)
         }
     }
 
@@ -48,19 +53,15 @@ class MainActivity : AppCompatActivity() {
         mHandler.looper.setMessageLogging(handlerLogger)
         mUIUtils.frameMonitor()
         testUI()
+        testFlutter()
         testKotlin()
     }
 
-    companion object {
-        const val TAG = "dq-kotlin "
-    }
-
     private fun testKotlin() {
-        val c = AtomicLong()
         val startTimeMillis = System.currentTimeMillis()
-        println("$TAG Start $c $startTimeMillis ${Thread.currentThread().name}")
-        // 启动一个协程
-        GlobalScope.launch() {//Dispathcers.Main
+        println("$TAG Start $startTimeMillis ${Thread.currentThread().name}")
+        // 主线程启动一个协程
+        GlobalScope.launch() {//Dispatchers.Main
             println("$TAG Hello  ${Thread.currentThread().name}")
             delay(1000)
             //同步执行
@@ -69,24 +70,28 @@ class MainActivity : AppCompatActivity() {
 
         println("$TAG main  ${Thread.currentThread().name}")
 
-        for (i in 1..1_000_000L) {//廉价的携程
-            GlobalScope.launch {
-                c.addAndGet(i)
-            }
-        }
         Thread.sleep(500) // 等待 2 秒钟
-        println("$TAG Stop ${c.get()} duration=${System.currentTimeMillis() - startTimeMillis}")
+        println("$TAG Stop duration=${System.currentTimeMillis() - startTimeMillis}")
     }
 
     private suspend fun ioTest() {
         withContext(Dispatchers.IO) {
-            println("$TAG 挂起函数，子线程执行")
+            val startTimeMillis = System.currentTimeMillis()
+
+            println("$TAG 挂起函数，子线程执行 $startTimeMillis")
+            val c = AtomicLong()
+            for (i in 1..1_000_000L) {//廉价的携程
+                //GlobalScope.launch(Dispatchers.IO) {
+                c.addAndGet(i)
+                //}
+            }
+            println("$TAG Stop ${c.get()} duration2=${System.currentTimeMillis() - startTimeMillis}")
         }
     }
 
     private fun testUI() {
-        mProgressView = findViewById(R.id.progressView)
-        mProgressView2 = findViewById(R.id.progressView2)
+        mProgressView = findViewById(R.id.progressView2)
+        mTvDemo1 = findViewById<TextView>(R.id.tv_demo1)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Just a demo from duqian2010@gmail.com", Snackbar.LENGTH_LONG)
@@ -95,11 +100,28 @@ class MainActivity : AppCompatActivity() {
 
         mHandler.postDelayed({
             mProgressView.setProgress(mProgress)
-            mProgressView2.setProgress(mProgress)
             mProgress++
             //Log.d("dq-pb", "progress1=$mProgress")
             mHandler.sendEmptyMessageDelayed(100, 1000)
-        }, 1000)
+        }, 3000)
+    }
+
+    private fun testFlutter() {
+        mTvDemo1.setOnClickListener {
+            startActivity(//跳转到指定的flutter页面,很慢
+                FlutterActivity
+                    .withNewEngine()
+                    .initialRoute("dq_flutter_page")
+                    .build(this)
+            )
+            startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
+                FlutterActivity
+                    .withCachedEngine("dq_engine_id")
+                    .build(this)
+            )
+            //startActivity(Intent(this, FlutterActivity::class.java))
+            //startActivity(FlutterActivity.createDefaultIntent(this))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,7 +132,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                openFeaturePage()
+                //openFeaturePage()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -120,6 +142,7 @@ class MainActivity : AppCompatActivity() {
     private fun openFeaturePage() {
         val intent = Intent()
         intent.setClassName(this, "com.duqian.progress.MainActivity")
+        intent.setPackage("site.duqian.dynamic_feature")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }

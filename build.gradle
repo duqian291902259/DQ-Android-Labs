@@ -11,9 +11,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath(group: 'site.duqian', name: 'DusanPlugin', version: '1.0.1') {
+        /*classpath(group: 'site.duqian', name: 'DusanPlugin', version: '1.0.1') {
             changing = true
-        }
+        }*/
 
         classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -26,8 +26,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

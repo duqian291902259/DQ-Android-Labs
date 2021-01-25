@@ -18,7 +18,7 @@ class UIUtils {
         override fun println(x: String?) {
             //Dispatching to Handler (android.view.Choreographer$FrameHandler) {11822ed} android.view.Choreographer$FrameDisplayEventReceiver@2394522: 0
             val diff = System.currentTimeMillis() - mLastHandleTime
-            Log.d("dq-log", "handler const time= $diff")
+            //Log.d("dq-log", "handler const time= $diff")
             if (diff>300){
                 Log.e("dq-log", "Please check task ,ui time = $diff")
             }
