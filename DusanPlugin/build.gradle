@@ -1,0 +1,53 @@
+apply plugin: 'groovy'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:3.4.0'
+    implementation 'com.android.tools.build:transform-api:1.5.0'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url "http://nexus.huya.com:8081/repository/maven-public/"
+    }
+    maven {
+        url "https://nexus.huya.com:8081/repository/jcenter/"
+    }
+    maven {
+        url "http://nexus.huya.com:8081/repository/maven-public/"
+    }
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+group = 'site.duqian'
+version = '1.0.1'
+uploadArchives {
+    repositories {
+        flatDir {
+            name "localRepository"
+            dir "../app/localRepository/libs"
+        }
+    }
+}
+
+
