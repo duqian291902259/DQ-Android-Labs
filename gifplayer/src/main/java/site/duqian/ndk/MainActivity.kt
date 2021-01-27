@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var sampleText: TextView
     lateinit var image: ImageView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -86,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun ndkLoadGif() {
-        //图片用的是assets目录里面的demo2.gif，能解析，但是还有些丢帧。自行拷贝到sdcard试用
+        //todo 图片用的是assets目录里面的demo2.gif，能解析，但是还有些丢帧。自行拷贝到sdcard试用
         val file = File(Environment.getExternalStorageDirectory(), "demo2.gif")
         gifHandler = GifHandler(file.absolutePath)
         //得到gif   width  height  生成Bitmap
@@ -103,6 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    //用于测试native方法hook，替换返回值
     private external fun stringFromJNI(): String
 
     companion object {

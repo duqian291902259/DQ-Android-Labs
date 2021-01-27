@@ -38,3 +38,11 @@ create_stdstr 参数一: duqian
 create_stdstr 参数二: 4
 create_stdstr onLeave...
 stringFromJNI onLeave...
+
+
+6,定位native崩溃
+pathtondk\ndk\22.0.7026061\toolchains\x86-4.9\prebuilt\windows-x86_64\bin\i686-linux-android-addr2line.exe -e D:\AndroidDev\AndroidSdk\ndk\22.0.7026061\toolchains\x86-4.9\prebuilt\windows-x86_64\bin\libnative-lib.so -f 00008f81
+DGifSlurp
+H:/DusanAndroid/DQ-Android-Labs/gifplayer/src/main/cpp/dgif_lib.c:1078
+
+

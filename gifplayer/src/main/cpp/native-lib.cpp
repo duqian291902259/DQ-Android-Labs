@@ -12,7 +12,7 @@
 #define LOGD(msg)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, msg)
 
 #define  argb(a, r, g, b) ( ((a) & 0xff) << 24 ) | ( ((b) & 0xff) << 16 ) | ( ((g) & 0xff) << 8 ) | ((r) & 0xff)
-
+#define NULL 0
 typedef struct GifBean {
 //播放帧数  第几帧
     int current_frame;
@@ -84,7 +84,7 @@ Java_site_duqian_ndk_GifHandler_loadPath(JNIEnv *env, jobject instance, jstring 
     gifFileType->UserData = gifBean;
     gifBean->current_frame = 0;
     gifBean->total_frame = gifFileType->ImageCount;
-    ExtensionBlock *ext;
+    ExtensionBlock *ext = nullptr;
     for (int i = 0; i < gifFileType->ImageCount; ++i) {
         SavedImage frame = gifFileType->SavedImages[i];
         for (int j = 0; j < frame.ExtensionBlockCount; ++j) {
