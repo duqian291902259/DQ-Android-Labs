@@ -5,27 +5,31 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.*
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class MainActivity : AppCompatActivity() {
 
-    private val REQUEST_CODE = 1000
     var bitmap: Bitmap? = null
     var gifHandler: GifHandler? = null
+    lateinit var sampleText: TextView
+    lateinit var image: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        sampleText = findViewById(R.id.sample_text)
+        image = findViewById(R.id.image)
         // Example of a call to a native method
-        sample_text.text = stringFromJNI()
+        sampleText.text = stringFromJNI()
 
-        sample_text.setOnClickListener {
+        sampleText.setOnClickListener {
             //加载gif图片
             ndkLoadGif()
         }
@@ -45,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ), REQUEST_CODE
+                    ), Companion.REQUEST_CODE
                 )
             }
         }
@@ -58,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == Companion.REQUEST_CODE) {
             for (result in grantResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "no permissions for rw sdcard", Toast.LENGTH_LONG).show()
@@ -98,17 +102,15 @@ class MainActivity : AppCompatActivity() {
         handler.sendEmptyMessageDelayed(1, nextFrame.toLong())
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
+
     private external fun stringFromJNI(): String
 
     companion object {
 
-        // Used to load the 'native-lib' library on application startup.
         init {
             System.loadLibrary("native-lib")
         }
+
+        private const val REQUEST_CODE = 1000
     }
 }

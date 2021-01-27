@@ -84,7 +84,7 @@ Java_site_duqian_ndk_GifHandler_loadPath(JNIEnv *env, jobject instance, jstring 
     gifFileType->UserData = gifBean;
     gifBean->current_frame = 0;
     gifBean->total_frame = gifFileType->ImageCount;
-    ExtensionBlock *ext = nullptr;
+    ExtensionBlock *ext;
     for (int i = 0; i < gifFileType->ImageCount; ++i) {
         SavedImage frame = gifFileType->SavedImages[i];
         for (int j = 0; j < frame.ExtensionBlockCount; ++j) {
@@ -157,17 +157,33 @@ Java_site_duqian_ndk_GifHandler_updateFrame(JNIEnv *env, jobject instance, jlong
 
     return gifBean->dealys[gifBean->current_frame];
 }
-extern "C" JNIEXPORT jstring JNICALL
+
+extern "C" {
+void *create_stdstr(char *data, int size) {
+    std::string *s = new std::string();
+    (*s).assign(data, size);
+    return s;
+}
+
+JNIEXPORT jstring JNICALL
 Java_site_duqian_ndk_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++,杜小菜";
-    LOGE("gif Hello from C++,杜小菜  666 ", env);
+    char *hello2 = "duqian";
+    LOGE("gif Hello from C++,杜小菜666", env);
+
+    create_stdstr(hello2,sizeof(hello2));
+
+    LOGI("gif Hello from C++");
     return env->NewStringUTF(hello.c_str());
+    //return env->NewStringUTF(static_cast<const char *>(create_stdstr("abcd", 3)));
 }
-extern "C"
+
+
 JNIEXPORT void JNICALL
 Java_site_duqian_ndk_GifHandler_release(JNIEnv *env, jobject thiz) {
+    LOGE("//todo 退出页面要释放资源");
+}
 
-    //todo 退出页面要释放资源
 }
