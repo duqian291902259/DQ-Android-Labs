@@ -1,10 +1,11 @@
-include ':DusanPlugin'
-setBinding(new Binding([gradle: this]))
+//include ':DusanPlugin'
 //如果无法编译，请不要引入flutter，或者配置好flutter的环境，flutter pub get" in flutter_module
+
+setBinding(new Binding([gradle: this]))
 evaluate(new File(
   settingsDir,
   'flutter_module/.android/include_flutter.groovy'
 ))
-include ':app', ':soloader', ':gifplayer'
+include ':app', ':soloader'//, ':gifplayer'
 //动态分支，用于google市场，aab测试，国内用不到
-include ':dynamic_feature'
+//include ':dynamic_feature'
