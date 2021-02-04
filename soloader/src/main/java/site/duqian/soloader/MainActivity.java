@@ -48,7 +48,7 @@ import site.duqian.so.loader.R;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1000;
-    private final String sdcardLibDir = Environment.getExternalStorageDirectory().getAbsolutePath();// + "/libs";
+    private final String sdcardLibDir = AppApplication.mContext.getCacheDir().getAbsolutePath();///Environment.getExternalStorageDirectory().getAbsolutePath();// + "/libs";
     private Context context;
     private FloatingActionButton fab;
 
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         isSoExist = false;
         applyForPermissions();
-
         //1，如果没有so就加载，肯定报错
         //loadLibrary();
 

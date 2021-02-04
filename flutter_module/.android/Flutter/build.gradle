@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 group 'site.duqian.flutter_module'
@@ -42,4 +43,11 @@ android {
 
 flutter {
     source '../..'
+}
+dependencies {
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

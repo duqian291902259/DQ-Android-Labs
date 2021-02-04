@@ -24,7 +24,7 @@ public class SoUtils {
         if (!TextUtils.isEmpty(cpuArchType)) {
             cpuArchType = cpuArchType.toLowerCase();
         }
-        final String rootSdcard = Environment.getExternalStorageDirectory().getAbsolutePath();
+        final String rootSdcard = AppApplication.mContext.getCacheDir().getAbsolutePath();//Environment.getExternalStorageDirectory().getAbsolutePath();
         String soFrom = rootSdcard + "/libs/" + cpuArchType + "/";
         final File file = new File(soFrom);
         if (!file.exists()) {
