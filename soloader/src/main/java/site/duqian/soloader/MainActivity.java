@@ -5,30 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import site.duqian.so.loader.R;
 
@@ -175,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
      * 4，使用LocalSoHelper可以拷贝so文件并load
      */
     private void loadLibrary() {
-        System.loadLibrary("nonostub");//系统方法也能正常加载，无法try catch住异常
+        System.loadLibrary("nonostub");//系统方法也能正常加载
         //msg是测试从assets目录拷贝的so的逻辑（模拟网络下载的某个so文件）
         final String msg = new com.nono.lite.MainActivity().getStringFromNative();
         Log.d("dq-so", "来自动态下发的so=" + msg);
