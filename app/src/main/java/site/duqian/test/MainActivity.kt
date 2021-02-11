@@ -97,7 +97,8 @@ class MainActivity : AppCompatActivity() {
         //val cpuArchType = "armeabi-v7a"//"arm64-v8a"
 
         val cpuArchType: String = SoUtils.getCpuArchType()
-        val soTest = "$rootLibDir/$cpuArchType/libflutter.so" //x86 arm64-v8a
+        val soTest = "$rootLibDir/$cpuArchType/app.so"
+        //val soTest = "$rootLibDir/$cpuArchType/libflutter.so"
         //注入flutter的本地so路径
         val soRootDir = "$rootLibDir/$cpuArchType/"
 
@@ -178,18 +179,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun testFlutter() {
         mTvDemo1.setOnClickListener {
-            startActivity(//跳转到指定的flutter页面,很慢
+            /*startActivity(//跳转到指定的flutter页面,很慢
                 FlutterActivity
                     .withNewEngine()
                     .initialRoute("dq_flutter_page")
                     .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     .build(this)
-            )
-            /*startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
+            )*/
+            startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
                 FlutterActivity
                     .withCachedEngine("dq_engine_id")
                     .build(this)
-            )*/
+            )
             startActivity(Intent(this, FlutterActivity::class.java))
             //startActivity(FlutterActivity.createDefaultIntent(this))
         }

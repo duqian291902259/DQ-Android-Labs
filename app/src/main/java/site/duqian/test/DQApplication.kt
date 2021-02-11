@@ -41,6 +41,7 @@ class DQApplication : Application() {
         val soFrom: String = SoUtils.getSoSourcePath()
         if (!File(soFrom).exists()) {
             ToastUtil.toast(this, "哈哈，本地so文件不存在，$soFrom")
+            return
         }
         SoFileLoadManager.loadSoFile(this, soFrom)
         mHasCopyFlutterSo = true
