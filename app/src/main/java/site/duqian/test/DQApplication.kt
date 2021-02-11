@@ -29,38 +29,24 @@ class DQApplication : Application() {
                 Log.d("dq-log", "initFlutterEngine " + Thread.currentThread().name + "#Next: " + s)
             }*/
 
-        copyFlutterSo()
+        dynamicSo()
 
         if (mHasCopyFlutterSo) {
             //initFlutterEngine() //Methods marked with @UiThread must be executed on the main thread.
         }
     }
 
-    private var mHasCopyFlutterSo = false
-
-    //nativeLibraryDirectories=[/data/user/0/site.duqian.so.test/files/libs/arm64-v8a/libflutter.so,
-    // /data/app/site.duqian.so.test-2/lib/x86, /data/app/site.duqian.so.
-    private fun copyFlutterSo() {
-        //将so拷贝到指定路径，并加载
-        val rootLibDir = mContext.filesDir.absolutePath
-        val soTest = "$rootLibDir/libs/x86_64/libflutter.so" //x86
-        //注入flutter的本地so路径
-        val installNativeLibraryPath =
-            LoadLibraryUtil.installNativeLibraryPath(mContext.classLoader, soTest)
-        if (File(soTest).exists()) {
-            mHasCopyFlutterSo = installNativeLibraryPath
-            Log.d("dq-so", "rootLibDir=$rootLibDir，mHasCopyFlutterSo=$mHasCopyFlutterSo")
-        } else {
-            Log.d("dq-so", "so not exist")
-
+    private fun dynamicSo() {
+        mHasCopyFlutterSo = false
+        val soFrom: String = SoUtils.getSoSourcePath()
+        if (!File(soFrom).exists()) {
+            ToastUtil.toast(this, "哈哈，本地so文件不存在，$soFrom")
         }
-        if (File("/data/user/0/site.duqian.so.test/files/libs/x86_64/libflutter.so").exists()) {
-            mHasCopyFlutterSo = installNativeLibraryPath
-            Log.d("dq-so", "rootLibDir=$rootLibDir，mHasCopyFlutterSo2222=$mHasCopyFlutterSo")
-        } else {
-            Log.d("dq-so", "so not exist222")
-        }
+        SoFileLoadManager.loadSoFile(this, soFrom)
+        mHasCopyFlutterSo = true
     }
+
+    private var mHasCopyFlutterSo = false
 
 
     private fun initFlutterEngine() {

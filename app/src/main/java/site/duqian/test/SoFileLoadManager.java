@@ -29,7 +29,8 @@ public class SoFileLoadManager {
                 //拷贝非必须，只做演示，注入的路径可以是sdcard的，也可以是app私有目录存储，建议app的files目录，安全
                 copy(fromPath, dir.getAbsolutePath());
             }
-            LoadLibraryUtil.installNativeLibraryPath(context.getApplicationContext().getClassLoader(), dir);
+            boolean success = LoadLibraryUtil.installNativeLibraryPath(context.getApplicationContext().getClassLoader(), dir);
+            Log.e("dq-so", "loadSoFile success?= " + success + ",dir=" + dir);
         } catch (Throwable throwable) {
             Log.e("dq-so", "loadSoFile error " + throwable.getMessage());
         }

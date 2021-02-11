@@ -1,9 +1,14 @@
 package site.duqian.test
+
 import android.content.Context
 import android.content.res.AssetManager
+import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
-import java.io.*
+import android.util.Log
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Description:So工具类
@@ -11,6 +16,45 @@ import java.io.*
  * E-mail:duqian2010@gmail.com
  */
 object SoUtils {
+
+    fun getSoSourcePath(): String {
+        var cpuArchType: String = getCpuArchType()
+        if (!TextUtils.isEmpty(cpuArchType)) {
+            cpuArchType = cpuArchType.toLowerCase()
+        }
+        val rootSdcard = Environment.getExternalStorageDirectory().absolutePath
+
+        //写死测试
+        //cpuArchType = "armeabi-v7a"//"arm64-v8a"
+
+        val soFrom = "$rootSdcard/libs/$cpuArchType/"
+        val file = File(soFrom)
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        Log.d("dq-so", "cpuArchType=$cpuArchType,soFrom=$soFrom")
+        return soFrom
+    }
+
+    fun getCpuArchType(): String {
+        var arch = ""
+        try {
+            val clazz = Class.forName("android.os.SystemProperties")
+            val get = clazz.getDeclaredMethod(
+                "get", *arrayOf<Class<*>>(
+                    String::class.java
+                )
+            )
+            arch = get.invoke(clazz, *arrayOf<Any>("ro.product.cpu.abi")) as String
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        if (TextUtils.isEmpty(arch)) {
+            arch = Build.CPU_ABI //可能不准确？
+        }
+        Log.d("dq getCpuArchType", "arch $arch")
+        return arch
+    }
 
     fun copyAssetsDirectory(context: Context, fromAssetPath: String, toPath: String): Boolean {
         return try {
