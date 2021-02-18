@@ -52,7 +52,7 @@ public class SoFileLoadManager {
                 hasSoLib = true;
             }
         }
-        return hasSoLib;
+        return hasSoLib;//演示，没有copy
     }
 
     /**

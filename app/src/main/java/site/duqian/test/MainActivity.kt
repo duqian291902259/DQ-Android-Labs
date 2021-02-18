@@ -186,11 +186,11 @@ class MainActivity : AppCompatActivity() {
                     .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     .build(this)
             )*/
-            startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
+            /*startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
                 FlutterActivity
                     .withCachedEngine("dq_engine_id")
                     .build(this)
-            )
+            )*/
             startActivity(Intent(this, FlutterActivity::class.java))
             //startActivity(FlutterActivity.createDefaultIntent(this))
         }
