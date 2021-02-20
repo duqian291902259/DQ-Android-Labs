@@ -18,6 +18,7 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.coroutines.*
 import java.io.File
+import java.sql.DriverManager.println
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -29,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "dq-kotlin "
     }
-
-    private val sdcardLibDir = Environment.getExternalStorageDirectory().absolutePath // + "/libs";
 
     private lateinit var mProgressView: ProgressView
     private lateinit var mTvDemo1: View
@@ -54,16 +53,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         applyForPermissions()
         val handlerLogger = mUIUtils.HandlerLogger()
         mHandler.looper.setMessageLogging(handlerLogger)
         mUIUtils.frameMonitor()
         testUI()
-        testFlutter()
-        testKotlin()
-
-        copyFlutterSo()
+        try {
+            testFlutter()
+            testKotlin()
+        } catch (e: Exception) {
+        }
     }
 
     private fun applyForPermissions() { //申请sdcard读写权限
@@ -87,45 +86,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private var mHasCopyFlutterSo = false
-
-    private fun copyFlutterSo() {
-        //将so拷贝到指定路径，并加载
-        //val rootLibDir = "${this.filesDir.absolutePath}/libs/"
-        val rootLibDir = "$sdcardLibDir/libs"
-        //val cpuArchType = "armeabi-v7a"//"arm64-v8a"
-
-        val cpuArchType: String = SoUtils.getCpuArchType()
-        val soTest = "$rootLibDir/$cpuArchType/app.so"
-        //val soTest = "$rootLibDir/$cpuArchType/libflutter.so"
-        //注入flutter的本地so路径
-        val soRootDir = "$rootLibDir/$cpuArchType/"
-
-        /*val installNativeLibraryPath = LoadLibraryUtil.installNativeLibraryPath(
-            this.classLoader,
-            soRootDir
-        )*/
-
-        val exists = File(soTest).exists()
-        if (exists) {
-            val soFrom: String = SoUtils.getSoSourcePath()
-            //注入so路径，如果清除了的话。没有清除可以不用每次注入
-            SoFileLoadManager.loadSoFile(this, soFrom)
-            Log.d("dq-so", "soFrom=$soFrom")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1000) {
+            DQApplication.mApplication.copyFlutterSo()
         }
-        try {
-            //System.loadLibrary("flutter") //系统方法也能正常加载
-        } catch (e: Exception) {
-            Log.d("dq-so", "loadLibrary  error $e")
-        }
-
-        //简单搞个后台线程,copy so,如果copy会失败， 请手动将assets目录的libs文件夹，拷贝到sdcard根目录
-        Thread {
-            val isSoExist = SoUtils.copyAssetsDirectory(this, "libs", rootLibDir)
-            Log.d("dq-so", "rootLibDir=$rootLibDir，copy from assets $isSoExist")
-            mHasCopyFlutterSo = isSoExist
-        }.start()
     }
 
     private fun testKotlin() {
@@ -179,20 +148,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun testFlutter() {
         mTvDemo1.setOnClickListener {
-            /*startActivity(//跳转到指定的flutter页面,很慢
-                FlutterActivity
-                    .withNewEngine()
-                    .initialRoute("dq_flutter_page")
-                    .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
-                    .build(this)
-            )*/
-            /*startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
-                FlutterActivity
-                    .withCachedEngine("dq_engine_id")
-                    .build(this)
-            )*/
-            startActivity(Intent(this, FlutterActivity::class.java))
-            //startActivity(FlutterActivity.createDefaultIntent(this))
+            if (BuildConfig.DEBUG) {
+                ToastUtil.toast(MainActivity@this,"Please modify packagingOptions,never exclude flutter so,or test release app")
+                return@setOnClickListener
+            }
+
+            try {
+                startActivity(//跳转到指定的flutter页面,很慢
+                    FlutterActivity
+                        .withNewEngine()
+                        .initialRoute("dq_flutter_page")
+                        .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
+                        .build(this)
+                )
+                startActivity(//使用指定的渲染引擎，预先初始化了engine，很快
+                    FlutterActivity
+                        .withCachedEngine("dq_engine_id")
+                        .build(this)
+                )
+                startActivity(Intent(this, FlutterActivity::class.java))
+                //startActivity(FlutterActivity.createDefaultIntent(this))
+            } catch (e: Exception) {
+            }
         }
     }
 

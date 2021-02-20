@@ -19,8 +19,8 @@ object SoUtils {
 
     fun getSoSourcePath(): String {
         var cpuArchType: String = getCpuArchType()
-        if (!TextUtils.isEmpty(cpuArchType)) {
-            cpuArchType = cpuArchType.toLowerCase()
+        if (TextUtils.isEmpty(cpuArchType)) {
+            cpuArchType = "armeabi-v7a"//"arm64-v8a"
         }
         val rootSdcard = Environment.getExternalStorageDirectory().absolutePath
 

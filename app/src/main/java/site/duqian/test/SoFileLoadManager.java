@@ -21,7 +21,7 @@ public class SoFileLoadManager {
      *
      * @param fromPath 下载的so，存放到sdcard的目录，拷贝私有目录，非必须，但是建议直接下载到私有目录路，这样做，不需要读写sdcard，
      */
-    public static void loadSoFile(Context context, String fromPath) {
+    public static boolean loadSoFile(Context context, String fromPath) {
         try {
             //File dir = new File(fromPath);
             File dir = context.getDir("libs", Context.MODE_PRIVATE);
@@ -31,9 +31,11 @@ public class SoFileLoadManager {
             }
             boolean success = LoadLibraryUtil.installNativeLibraryPath(context.getApplicationContext().getClassLoader(), dir);
             Log.e("dq-so", "loadSoFile success?= " + success + ",dir=" + dir);
+            return success;
         } catch (Throwable throwable) {
             Log.e("dq-so", "loadSoFile error " + throwable.getMessage());
         }
+        return false;
     }
 
     /**
