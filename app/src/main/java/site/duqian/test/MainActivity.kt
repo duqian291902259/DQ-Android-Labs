@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                         .withCachedEngine("dq_engine_id")
                         .build(this)
                 )
-                startActivity(Intent(this, FlutterActivity::class.java))
+                //startActivity(Intent(this, FlutterActivity::class.java))
                 //startActivity(FlutterActivity.createDefaultIntent(this))
             } catch (e: Exception) {
             }

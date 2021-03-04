@@ -43,19 +43,19 @@ class DQApplication : Application() {
             ) == PackageManager.PERMISSION_GRANTED
 
         }
-        if (BuildConfig.DEBUG) {// TODO: 2/20/21 debug环境不去除flutter的so
-            initFlutterEngine() //测试环境，release包才有对应的libflutter.so测试so动态加载，
-            return
-        }
         if (hasWritePermission) {
             copyFlutterSo()
         } else {
-            //todo 请（手动）给应用赋予sdcard权限后再试
+            //请（手动）给应用赋予sdcard权限后再试
         }
     }
 
     private fun initFlutterEngine() {
         try {
+            if (BuildConfig.DEBUG) {
+                //initFlutterEngine() //测试环境，release包才有对应的libflutter.so测试so动态加载，
+                return
+            }
             flutterEngine = FlutterEngine(mContext)
 
             // Start executing Dart code to pre-warm the FlutterEngine.
@@ -82,9 +82,11 @@ class DQApplication : Application() {
         //val rootLibDir = "${this.filesDir.absolutePath}/libs/"
         val rootLibDir = "$sdcardLibDir/libs"
         val cpuArchType: String = SoUtils.getCpuArchType()
-        val soTest = "$rootLibDir/$cpuArchType/libflutter.so"
-        val exists = File(soTest).exists()
-        if (exists) {
+        val flutterSoPath = "$rootLibDir/$cpuArchType/libflutter.so"
+        val appSoPath = "$rootLibDir/$cpuArchType/libapp.so"
+        val exists = File(flutterSoPath).exists()
+        val exists2 = File(appSoPath).exists()
+        if (exists && exists2) {
             loadSoAndInit()
             return
         }
