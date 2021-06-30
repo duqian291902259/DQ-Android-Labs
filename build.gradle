@@ -35,3 +35,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+task hello2 {
+    doLast {
+        println 'Hello duqian!'
+    }
+}
