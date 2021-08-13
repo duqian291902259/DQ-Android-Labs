@@ -9,3 +9,5 @@ evaluate(new File(
 include ':app', ':soloader'//, ':gifplayer'
 //动态分支，用于google市场，aab测试，国内用不到
 //include ':dynamic_feature'
+
+include ':flutter_module'

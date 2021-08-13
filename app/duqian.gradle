@@ -4,6 +4,12 @@ task hello {
     }
 }
 
-task intro(dependsOn: hello) << {
+task intro(dependsOn: hello){
     println "I'm Gradle"
 }
+
+/**
+ * gradle -q hello
+ *
+ * 输出
+ */

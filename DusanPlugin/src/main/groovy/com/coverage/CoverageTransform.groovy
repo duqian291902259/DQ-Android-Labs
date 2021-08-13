@@ -100,6 +100,4 @@ public class CoverageTransform extends Transform {
     boolean isIncremental() {
         return false
     }
-
-
 }
