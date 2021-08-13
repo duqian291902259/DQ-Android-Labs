@@ -8,10 +8,11 @@ class CoveragePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        println " ----------------------- CoveragePlugin -----------------------"
+        println " ----------------------- CoveragePlugin start-----------------------"
         def android = project.extensions.getByType(AppExtension);
         def transform = new CoverageTransform(project);
         android.registerTransform(transform);
+        println " ----------------------- CoveragePlugin end-----------------------"
     }
 
 }

@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+//apply plugin: 'maven'
 
 dependencies {
     implementation gradleApi()
@@ -41,7 +42,8 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 group = 'site.duqian'
 version = '1.0.1'
-//./gradlew uploadArchives（执行这个Task）
+//gradlew uploadArchives
+
 uploadArchives {
     repositories {
         flatDir {
