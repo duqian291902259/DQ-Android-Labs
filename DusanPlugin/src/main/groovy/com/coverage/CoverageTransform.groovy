@@ -36,14 +36,12 @@ public class CoverageTransform extends Transform {
                    Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
         println "================ CoverageTransform transform ================"
 
-
         //遍历input
         inputs.each { TransformInput input ->
-            //遍历文件夹
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 // 获取output目录
                 def dest = outputProvider.getContentLocation(directoryInput.name,
-                        directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)//这里写代码片
+                        directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
 
                 // 将input的目录复制到output指定目录
                 FileUtils.copyDirectory(directoryInput.file, dest)
@@ -75,7 +73,7 @@ public class CoverageTransform extends Transform {
         println('CoverageTransform coverageVersion  ' + coverageVersion + "    mProject.rootDir = ${mProject.rootDir}")
         println("mProjectName = ${mProject.name}" + "  Project displayName = ${mProject.displayName}")
 
-        def cmd = "java -Drevision=${coverageVersion} -DprojectName=nimo -DbuildNumber=${buildNumber} -Dfilter=${mProject.rootDir}/app/filter.txt -DshouldBanRes=true -jar ${mProject.rootDir}/app/coverageLibs/androidcov.jar ${mDestDir}"
+        def cmd = "java -Drevision=${coverageVersion} -DprojectName=Android-Lab-DQ -DbuildNumber=${buildNumber} -Dfilter=${mProject.rootDir}/app/filter.txt -DshouldBanRes=true -jar ${mProject.rootDir}/app/coverageLibs/androidcov.jar ${mDestDir}"
         println('cmd' + ' = ' + cmd)
 
         long start = System.currentTimeMillis();
@@ -98,6 +96,6 @@ public class CoverageTransform extends Transform {
 
     @Override
     boolean isIncremental() {
-        return false
+        return true
     }
 }
