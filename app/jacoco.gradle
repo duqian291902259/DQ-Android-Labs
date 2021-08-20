@@ -8,7 +8,7 @@ jacoco {
 //源代码路径
 def coverageSourceDirs = [
         "$projectDir/app/src/main/java",
-        "$projectDir/duqian/src/main/java"
+        "$projectDir/soloader/src/main/java"
 ]
 
 //class文件路径
