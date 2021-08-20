@@ -93,6 +93,8 @@ class MainActivity : AppCompatActivity() {
     private fun testUI() {
         mProgressView = findViewById(R.id.progressView2)
         mTvDemo1 = findViewById<TextView>(R.id.tv_demo1)
+        val  mTvDemo2 = findViewById<TextView>(R.id.tv_demo2)
+        mTvDemo2.text = NumberProvider.provideNumber().toString()
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Just a demo from duqian2010@gmail.com", Snackbar.LENGTH_LONG)

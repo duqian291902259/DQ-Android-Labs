@@ -33,21 +33,6 @@
 
     </RelativeLayout>
 
-    <!--<site.duqian.test.ProgressView
-        android:id="@+id/progressView"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        app:firstPbColor="@color/borderColor"
-        app:progress="70"
-        app:progressShape="rectangle"
-        app:secondPbColor="@color/textColor"
-        app:textColor="@color/textColor"
-        app:textDimension="13dp"
-        android:visibility="gone"
-        />-->
-
     <site.duqian.test.ProgressView
         android:id="@+id/progressView2"
         android:layout_width="200dp"
@@ -61,5 +46,17 @@
         app:secondPbColor="#FFFFFF"
         app:strokeSize="3dp"
         app:textDimension="15dp" />
+
+
+    <TextView
+        android:id="@+id/tv_demo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:text="杜小菜"
+        android:textColor="@color/color_white"
+        android:textSize="30sp"/>
 
 </LinearLayout>

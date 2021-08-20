@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from:'duqian.gradle'
 //apply from:'../DusanPlugin/build.gradle'
-apply plugin: 'coveragePlugin'
+//apply plugin: 'coveragePlugin'
+apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 
 android {
     compileSdkVersion 30
@@ -21,6 +22,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug{
+            testCoverageEnabled true
+        }
     }
 
     compileOptions {
@@ -29,6 +34,29 @@ android {
     }
 
     //dynamicFeatures = [':dynamic_feature']
+}
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+jacocoAndroidUnitTestReport {
+    excludes += ['**/AutoValue_*.*',
+                 '**/*JavascriptBridge.class']
+}
+
+jacocoAndroidUnitTestReport {
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
+}
+
+jacocoAndroidUnitTestReport {
+    destination "D:\\DusanAndroid\\Android-Lab-DQ\\app\\release\\"
 }
 
 dependencies {
@@ -51,6 +79,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
 }
 
