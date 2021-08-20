@@ -1,14 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from:'duqian.gradle'
-//apply from:'../DusanPlugin/build.gradle'
+//apply plugin: 'jacoco'
+apply from: 'jacoco.gradle'
+
 //apply plugin: 'coveragePlugin'
-apply plugin: 'com.dicedmelon.gradle.jacoco-android'
+//apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "site.duqian.so.test"
+        applicationId "site.duqian.test"
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 3
@@ -36,28 +38,25 @@ android {
     //dynamicFeatures = [':dynamic_feature']
 }
 
-jacoco {
-    toolVersion = "0.8.4"
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-}
-
-jacocoAndroidUnitTestReport {
-    excludes += ['**/AutoValue_*.*',
-                 '**/*JavascriptBridge.class']
-}
-
-jacocoAndroidUnitTestReport {
-    csv.enabled false
-    html.enabled true
-    xml.enabled true
-}
-
-jacocoAndroidUnitTestReport {
-    destination "D:\\DusanAndroid\\Android-Lab-DQ\\app\\release\\"
-}
+//
+//tasks.withType(Test) {
+//    jacoco.includeNoLocationClasses = true
+//}
+//
+//jacocoAndroidUnitTestReport {
+//    excludes += ['**/AutoValue_*.*',
+//                 '**/*JavascriptBridge.class']
+//}
+//
+//jacocoAndroidUnitTestReport {
+//    csv.enabled false
+//    html.enabled true
+//    xml.enabled true
+//}
+//
+//jacocoAndroidUnitTestReport {
+//    destination "D:\\DusanAndroid\\Android-Lab-DQ\\app\\release\\"
+//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

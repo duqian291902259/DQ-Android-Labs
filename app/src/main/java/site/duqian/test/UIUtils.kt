@@ -29,7 +29,7 @@ class UIUtils {
     fun frameMonitor() {//帧率检测
         Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
-                Log.d("dq-log", "doFrame $frameTimeNanos")
+                //Log.d("dq-log", "doFrame $frameTimeNanos")
                 val diff = (frameTimeNanos - mLastFrameTime) / 1_000_000
                 val frameCountPerSecond = 1000 * 1f / 60
                 if (diff > frameCountPerSecond) {

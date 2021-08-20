@@ -1,0 +1,55 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    //toolVersion = "0.8.2"
+    toolVersion = "0.8.7"
+}
+
+//源代码路径
+def coverageSourceDirs = [
+        "$projectDir/app/src/main/java",
+        "$projectDir/duqian/src/main/java"
+]
+
+//class文件路径
+def coverageClassDirs = [
+        "$buildDir/intermediates/javac/debug/classes",
+        "$buildDir/intermediates/javac/debug/classes"
+]
+
+//这个就是具体解析ec文件的任务，会根据我们指定的class路径、源码路径、ec路径进行解析输出
+//jacocoTestReport createDebugCoverageReport
+
+task jacocoTestReport(type: JacocoReport) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    Object dirs = files(files(coverageClassDirs).files.collect {
+        fileTree(dir: it,
+                // 过滤不需要统计的class文件
+                excludes: ['**/R*.class',
+                           '**/*$InjectAdapter.class',
+                           '**/*$ModuleAdapter.class',
+                           '**/*$ViewInjector*.class'
+                ])
+    })
+    getClassDirectories().setFrom(dirs)
+
+    sourceDirectories.setFrom(coverageSourceDirs)
+
+    executionData.setFrom(files("$buildDir/outputs/code_coverage/debugAndroidTest/connected/coverage.ec"))
+
+    doFirst {
+        //遍历class路径下的所有文件，替换字符
+        coverageClassDirs.each { path ->
+            new File(path).eachFileRecurse { file ->
+                if (file.name.contains('$$')) {
+                    file.renameTo(file.path.replace('$$', '$'))
+                }
+            }
+        }
+    }
+}

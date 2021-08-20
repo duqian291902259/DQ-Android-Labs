@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <uses-library android:name="android.test.runner" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -28,6 +29,16 @@
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".jacoco.InstrumentedActivity"
+            android:label="InstrumentationActivity" />
     </application>
+
+    <instrumentation
+        android:handleProfiling="true"
+        android:label="CoverageInstrumentation"
+        android:name="site.duqian.test.jacoco.JacocoInstrumentation"
+        android:targetPackage="site.duqian.test"/>
 
 </manifest>

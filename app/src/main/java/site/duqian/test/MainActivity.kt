@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong
  * 测试主线程卡顿，丢帧，自定义环形进度条控件，阴影效果
  * by duqian2010@gmail.com on 2021-01
  */
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "dq-kotlin "
