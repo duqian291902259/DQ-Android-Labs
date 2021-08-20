@@ -7,27 +7,29 @@ jacoco {
 
 //源代码路径
 def coverageSourceDirs = [
-        "$projectDir/app/src/main/java",
-        "$projectDir/soloader/src/main/java"
+        "$projectDir\\src\\main\\java",
+        //"D:\\DusanAndroid\\Android-Lab-DQ\\app\\src\\main\\"
+        //"$projectDir/soloader/src/main/java"
 ]
 
 //class文件路径
 def coverageClassDirs = [
         "$buildDir/intermediates/javac/debug/classes",
-        "$buildDir/intermediates/javac/debug/classes"
+        "$buildDir/tmp/kotlin-classes/debug",
+        //"D:\\DusanAndroid\\Android-Lab-DQ\\app\\build\\tmp\\kotlin-classes\\debug\\site\\duqian\\kotlin"
 ]
 
 //这个就是具体解析ec文件的任务，会根据我们指定的class路径、源码路径、ec路径进行解析输出
 //jacocoTestReport createDebugCoverageReport
 
-task jacocoTestReport(type: JacocoReport) {
+task jacocoTestReportNew(type: JacocoReport) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     reports {
         xml.enabled = true
         html.enabled = true
     }
-    Object dirs = files(files(coverageClassDirs).files.collect {
+    def dirs = files(files(coverageClassDirs).files.collect {
         fileTree(dir: it,
                 // 过滤不需要统计的class文件
                 excludes: ['**/R*.class',
@@ -43,11 +45,15 @@ task jacocoTestReport(type: JacocoReport) {
     executionData.setFrom(files("$buildDir/outputs/code_coverage/debugAndroidTest/connected/coverage.ec"))
 
     doFirst {
+        System.out.println("buildDir=$buildDir")
+        System.out.println("buildDir=$projectDir")
         //遍历class路径下的所有文件，替换字符
         coverageClassDirs.each { path ->
             new File(path).eachFileRecurse { file ->
                 if (file.name.contains('$$')) {
+                    System.out.println("file=$file")
                     file.renameTo(file.path.replace('$$', '$'))
+                    System.out.println("new file=$file")
                 }
             }
         }

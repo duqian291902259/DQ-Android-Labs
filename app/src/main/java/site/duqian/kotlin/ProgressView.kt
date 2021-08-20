@@ -1,12 +1,12 @@
-package site.duqian.test
+package site.duqian.kotlin
 
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import site.duqian.test.R
 
 /**
  * Des:圆角矩形进度条

@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="site.duqian.test">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
-        android:name=".DQApplication"
+        android:name="site.duqian.kotlin.DQApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +16,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <uses-library android:name="android.test.runner" />
         <activity
-            android:name=".MainActivity"
+            android:name="site.duqian.kotlin.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,14 +33,14 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".jacoco.InstrumentedActivity"
+            android:name="site.duqian.test.InstrumentedActivity"
             android:label="InstrumentationActivity" />
     </application>
 
     <instrumentation
         android:handleProfiling="true"
         android:label="CoverageInstrumentation"
-        android:name="site.duqian.test.jacoco.JacocoInstrumentation"
+        android:name="site.duqian.test.JacocoInstrumentation"
         android:targetPackage="site.duqian.test"/>
 
 </manifest>

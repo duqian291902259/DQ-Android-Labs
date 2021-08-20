@@ -1,4 +1,4 @@
-package site.duqian.test.jacoco;
+package site.duqian.test;
 
 
 public interface FinishListener {

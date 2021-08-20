@@ -1,4 +1,4 @@
-package site.duqian.test.jacoco;
+package site.duqian.test;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,6 +47,9 @@ public class JacocoInstrumentation extends Instrumentation implements FinishList
         if (arguments != null) {
             mCoverageFilePath = arguments.getString("coverageFile");
         }
+        boolean exists = file.exists();
+        Log.d(TAG, "jacoco coverage exists：" + exists);
+
         mIntent = new Intent(getTargetContext(), InstrumentedActivity.class);
         mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         start();
@@ -68,10 +72,14 @@ public class JacocoInstrumentation extends Instrumentation implements FinishList
     }
 
     private void generateCoverageReport() {
-        Log.d(TAG, "generateCoverageReport():" + getCoverageFilePath());
+        String coverageFilePath = getCoverageFilePath();
+        Log.d(TAG, "generateCoverageReport():" + coverageFilePath);
         OutputStream out = null;
         try {
-            out = new FileOutputStream(getCoverageFilePath(), false);
+            File file = new File(DEFAULT_COVERAGE_FILE_PATH);
+            boolean exists = file.exists();
+            Log.d(TAG, "generateCoverageReport exists：" + exists + ",size=" + file.length());
+            out = new FileOutputStream(coverageFilePath, false);
             Object agent = Class.forName("org.jacoco.agent.rt.RT")
                     .getMethod("getAgent")
                     .invoke(null);

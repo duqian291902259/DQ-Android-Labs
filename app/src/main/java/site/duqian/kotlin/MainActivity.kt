@@ -1,4 +1,4 @@
-package site.duqian.test
+package site.duqian.kotlin
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.coroutines.*
+import site.duqian.test.R
 import java.util.concurrent.atomic.AtomicLong
 
 /**

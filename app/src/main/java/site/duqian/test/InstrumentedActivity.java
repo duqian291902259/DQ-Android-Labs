@@ -1,8 +1,8 @@
-package site.duqian.test.jacoco;
+package site.duqian.test;
 
 import android.util.Log;
 
-import site.duqian.test.MainActivity;
+import site.duqian.kotlin.MainActivity;
 
 /**
  * Description:代理activity
