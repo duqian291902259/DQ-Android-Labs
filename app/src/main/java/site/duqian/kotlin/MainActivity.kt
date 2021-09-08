@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.coroutines.*
+import site.duqian.test.CCJacocoHelper
 import site.duqian.test.R
 import java.util.concurrent.atomic.AtomicLong
 
@@ -155,5 +156,6 @@ open class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mHandler.removeCallbacksAndMessages(null)
+        CCJacocoHelper.generateEcFile(this.applicationContext,true)
     }
 }

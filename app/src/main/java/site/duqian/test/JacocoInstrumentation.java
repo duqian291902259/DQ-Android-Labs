@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 
@@ -14,16 +15,18 @@ import java.io.OutputStream;
 
 /**
  * Description:
+ * adb命令
+ * adb shell am instrument site.duqian.test/site.duqian.test.JacocoInstrumentation
  *
  * @author n20241 Created by 杜小菜 on 2021/8/20 - 11:53 .
  * E-mail: duqian2010@gmail.com
  */
 public class JacocoInstrumentation extends Instrumentation implements FinishListener {
     public static String TAG = "JacocoInstrumentation:";
-    private static String DEFAULT_COVERAGE_FILE_PATH = "/mnt/sdcard/coverage.ec";
+    private static String DEFAULT_COVERAGE_FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/com.netease.cc/coverage.ec";
     private final Bundle mResults = new Bundle();
     private Intent mIntent;
-    private final boolean mCoverage = true;
+    private final boolean mCoverage = BuildConfig.DEBUG;
     private String mCoverageFilePath;
 
     public JacocoInstrumentation() {
@@ -33,7 +36,8 @@ public class JacocoInstrumentation extends Instrumentation implements FinishList
     public void onCreate(Bundle arguments) {
         Log.d(TAG, "onCreate(" + arguments + ")");
         super.onCreate(arguments);
-        DEFAULT_COVERAGE_FILE_PATH = getContext().getFilesDir().getPath() + "/coverage.ec";
+        //DEFAULT_COVERAGE_FILE_PATH = getContext().getFilesDir().getPath() + "/coverage.ec";
+        DEFAULT_COVERAGE_FILE_PATH = getContext().getExternalCacheDir() + "/jacoco/coverage.ec";
         Log.d(TAG, "新建文件：" + DEFAULT_COVERAGE_FILE_PATH);
 
         File file = new File(DEFAULT_COVERAGE_FILE_PATH);

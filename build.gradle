@@ -1,15 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.5.21'
+    ext.kotlin_version = '1.4.32'
     repositories {
+        mavenLocal()
+        /*maven {
+            url uri('app/localRepository/libs')
+        }*/
         flatDir {
             name 'localRepository'
             dir "app/localRepository/libs"
         }
         google()
         jcenter()
-        mavenLocal()
         //maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
@@ -19,29 +22,21 @@ buildscript {
 
         classpath 'com.android.tools.build:gradle:4.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+
         //classpath 'com.dicedmelon.gradle:jacoco-android:0.1.6-SNAPSHOT'
     }
 }
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-
-        maven { url "https://oss.jfrog.org/libs-snapshot" }
-
         mavenLocal()
-        maven {
-            url uri('./repo')
-        }
-
         maven {
             url uri('app/localRepository/libs')
         }
+        google()
+        jcenter()
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
         //maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
-
     }
 }
 
