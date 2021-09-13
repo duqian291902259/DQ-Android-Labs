@@ -6,13 +6,13 @@ jacoco {
 
 //源代码路径
 def coverageSourceDirs = [
-        "$projectDir\\src\\main\\java",
+        '$projectDir\\src\\main\\java',
 ]
 
 //class文件路径
 def coverageClassDirs = [
-        "$buildDir/intermediates/javac/debug/classes",
-        "$buildDir/tmp/kotlin-classes/debug",
+        '$buildDir/intermediates/javac/debug/classes',
+        '$buildDir/tmp/kotlin-classes/debug',
 ]
 
 //解析ec文件的任务，会根据指定的class路径、源码路径、ec路径进行解析输出
@@ -38,7 +38,8 @@ task jacocoTestReportNew(type: JacocoReport) {
 
     sourceDirectories.setFrom(coverageSourceDirs)
 
-    executionData.setFrom(files("$buildDir/outputs/code_coverage/coverage.ec"))
+    //executionData.setFrom(files('$buildDir/outputs/code_coverage/coverage.ec'))
+    executionData.setFrom(files('$buildDir/outputs/code_coverage/debugAndroidTest/connected/Pixel_4_XL_API_30(AVD) - 11-coverage.ec'))
 
     doFirst {
         System.out.println("buildDir=$buildDir")
@@ -61,7 +62,7 @@ task jacocoTestReportNew(type: JacocoReport) {
 task jacocoInit() {
     group = "JacocoReport"
     doFirst {
-        File file = new File("$buildDir/outputs/code-coverage/")
+        File file = new File("$buildDir/outputs/code_coverage/")
         if (!file.exists()) {
             file.mkdir()
         }

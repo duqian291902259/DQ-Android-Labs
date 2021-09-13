@@ -18,7 +18,7 @@ object CCJacocoHelper {
 
     //ec文件的路径
     private val DEFAULT_COVERAGE_ROOT_DIR =
-        Environment.getExternalStorageDirectory().absolutePath + "/Android/data/com.netease.cc/coverage/"
+        Environment.getExternalStorageDirectory().absolutePath + "/Android/data/site.duqian.test/coverage/"
 
     /**
      * 生成ec文件
