@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'coveragePlugin'
 
 //jacoco-test
-apply from: 'jacoco.gradle'
+//apply from: 'jacoco.gradle'
 
 //apply plugin: 'jacoco'
 //apply plugin: 'com.dicedmelon.gradle.jacoco-android'
@@ -30,7 +30,7 @@ android {
         }
 
         debug{
-            testCoverageEnabled true
+            //testCoverageEnabled true
         }
     }
 
@@ -69,7 +69,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation project(path: ':flutter')
-    implementation fileTree(dir: 'coverageLibs', include: ['*.jar'])
+    //implementation fileTree(dir: 'coverageLibs', include: ['*.jar'])
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
