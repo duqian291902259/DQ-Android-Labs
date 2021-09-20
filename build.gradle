@@ -16,9 +16,9 @@ buildscript {
         //maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath(group: 'site.duqian', name: 'DusanPlugin', version: '1.0.1') {
+        /*classpath(group: 'site.duqian', name: 'DusanPlugin', version: '1.0.1') {
             changing = true
-        }
+        }*/
 
         classpath 'com.android.tools.build:gradle:4.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

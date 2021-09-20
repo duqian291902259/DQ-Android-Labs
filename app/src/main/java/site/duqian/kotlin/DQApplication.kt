@@ -3,9 +3,6 @@ package site.duqian.kotlin
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.FlutterEngineCache
-import io.flutter.embedding.engine.dart.DartExecutor
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -16,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * E-mail:duqian2010@gmail.com
  **/
 class DQApplication : Application() {
-    var flutterEngine: FlutterEngine? = null
+    //var flutterEngine: FlutterEngine? = null
     lateinit var mContext: Context
     override fun onCreate() {
         super.onCreate()
@@ -31,11 +28,11 @@ class DQApplication : Application() {
                 Log.d("dq-log", "initFlutterEngine " + Thread.currentThread().name + "#Next: " + s)
             }
 
-        initFlutterEngine() //Methods marked with @UiThread must be executed on the main thread.
+        //initFlutterEngine() //Methods marked with @UiThread must be executed on the main thread.
 
     }
 
-    private fun initFlutterEngine() {
+    /*private fun initFlutterEngine() {
         flutterEngine = FlutterEngine(mContext)
 
         // Start executing Dart code to pre-warm the FlutterEngine.
@@ -48,6 +45,6 @@ class DQApplication : Application() {
             .getInstance()
             .put("dq_engine_id", flutterEngine)
         Log.d("dq-log", "FlutterEngineCache")
-    }
+    }*/
 
 }

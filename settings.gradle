@@ -6,7 +6,7 @@ evaluate(new File(
         settingsDir,
         'flutter_module/.android/include_flutter.groovy'
 ))
-include ':flutter_module'
+//include ':flutter_module'
 //动态分支，用于google市场，aab测试，国内用不到
 //include ':dynamic_feature'
 

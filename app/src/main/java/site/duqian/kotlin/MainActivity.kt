@@ -13,8 +13,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.coroutines.*
 import site.duqian.test.CCJacocoHelper
 import site.duqian.test.R
@@ -113,7 +111,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun testFlutter() {
         mTvDemo1.setOnClickListener {
-            startActivity(//跳转到指定的flutter页面,很慢
+            /*startActivity(//跳转到指定的flutter页面,很慢
                 FlutterActivity
                     .withNewEngine()
                     .initialRoute("dq_flutter_page")
@@ -124,7 +122,7 @@ open class MainActivity : AppCompatActivity() {
                 FlutterActivity
                     .withCachedEngine("dq_engine_id")
                     .build(this)
-            )
+            )*/
             //startActivity(Intent(this, FlutterActivity::class.java))
             //startActivity(FlutterActivity.createDefaultIntent(this))
         }
