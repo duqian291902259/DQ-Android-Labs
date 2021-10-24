@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import site.duqian.test.CCJacocoHelper
+import site.duqian.test.DQJacocoHelper
 import site.duqian.test.R
 import java.util.concurrent.atomic.AtomicLong
 
@@ -154,6 +154,6 @@ open class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mHandler.removeCallbacksAndMessages(null)
-        CCJacocoHelper.generateEcFile(this.applicationContext,true)
+        DQJacocoHelper.generateEcFile(this.applicationContext,true)
     }
 }

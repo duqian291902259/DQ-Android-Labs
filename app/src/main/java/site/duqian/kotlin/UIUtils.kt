@@ -34,7 +34,7 @@ class UIUtils {
                 val frameCountPerSecond = 1000 * 1f / 60
                 if (diff > frameCountPerSecond) {
                     val droppedFrames = diff / frameCountPerSecond
-                    Log.d("dq-log", "droppedFrames $droppedFrames")
+                    //Log.d("dq-log", "droppedFrames $droppedFrames")
                 }
                 mLastFrameTime = frameTimeNanos
                 Choreographer.getInstance().postFrameCallback(this)

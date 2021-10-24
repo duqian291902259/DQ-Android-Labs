@@ -57,7 +57,6 @@ task jacocoTestReportNew(type: JacocoReport) {
     }
 }
 
-
 //初始化Jacoco Task
 task jacocoInit() {
     group = "JacocoReport"

@@ -13,8 +13,8 @@ import java.io.OutputStream
  *
  * @author n20241 Created by 杜小菜 on 2021/9/8 - 11:55 . E-mail: duqian2010@gmail.com
  */
-object CCJacocoHelper {
-    private const val TAG = "CCJacocoHelper"
+object DQJacocoHelper {
+    private const val TAG = "DQJacocoHelper"
 
     //ec文件的路径
     private val DEFAULT_COVERAGE_ROOT_DIR =

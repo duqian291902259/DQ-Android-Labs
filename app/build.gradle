@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'jacoco'
+
 //gradle-test
 //apply from:'duqian.gradle'
 //覆盖率gradle插件test
 //apply plugin: 'coveragePlugin'
 
 //jacoco-test
-//apply from: 'jacoco.gradle'
+apply from: 'jacoco.gradle'
 
-//apply plugin: 'jacoco'
 //apply plugin: 'com.dicedmelon.gradle.jacoco-android'
 
 android {
