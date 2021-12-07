@@ -9,6 +9,11 @@ buildscript {
         }*/
         google()
         jcenter()
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
         /*classpath(group: 'site.duqian', name: 'DusanPlugin', version: '1.0.1') {
@@ -26,8 +31,12 @@ allprojects {
     repositories {
         google()
         jcenter()
-
-        maven { url "https://oss.jfrog.org/libs-snapshot" }
+        mavenCentral()
+        //maven { url "https://oss.jfrog.org/libs-snapshot" }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 

@@ -9,15 +9,9 @@ dependencies {
 
 repositories {
     mavenLocal()
-    maven {
-        url "http://nexus.huya.com:8081/repository/maven-public/"
-    }
-    maven {
-        url "https://nexus.huya.com:8081/repository/jcenter/"
-    }
-    maven {
-        url "http://nexus.huya.com:8081/repository/maven-public/"
-    }
+    google()
+    jcenter()
+    mavenCentral()
 }
 
 sourceSets {
