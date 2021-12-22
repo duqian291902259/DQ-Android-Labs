@@ -79,6 +79,20 @@ private static void install(ClassLoader classLoader, File folder) throws Throwab
 下载apk体验一下吧：
 [soloader-release.apk](https://github.com/duqian291902259/DQ-Android-Labs/blob/master/release-app/soloader-release.apk)
 
+
+### DusanPlugin
+关于gradle插件的开发，覆盖率统计工具
+
+### flutter_module
+Android引入Flutter，Flutter模块工程
+
+### gifplayer
+Android NDK开发，演示c++实现gif图片播放
+
+### FileEncryption
+C/C++实现文件加解密的逻辑，java调用jni，实现整个文件的加解密、或者字节流byte数组的加解密。
+
+
 ### Thanks
 Welcome to contact me: [duqian2010@gmail.com](http://www.duqian.site) or Wechat:dusan2010
 
