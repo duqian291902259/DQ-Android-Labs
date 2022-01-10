@@ -56,6 +56,8 @@ class MainActivity : AppCompatActivity() {
         testUI()
         testFlutter()
         testKotlin()
+
+        mUIUtils.testPngSize(resources)
     }
 
     private fun testKotlin() {

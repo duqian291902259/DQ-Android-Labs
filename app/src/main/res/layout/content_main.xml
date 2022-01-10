@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorPrimary"
-    android:paddingTop="50dp"
-    android:orientation="vertical">
+    android:background="@color/textColor"
+    android:orientation="vertical"
+    android:paddingTop="50dp">
 
     <RelativeLayout
         android:id="@+id/rl_demo1"
@@ -33,33 +33,35 @@
 
     </RelativeLayout>
 
-    <!--<site.duqian.test.ProgressView
-        android:id="@+id/progressView"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        app:firstPbColor="@color/borderColor"
-        app:progress="70"
-        app:progressShape="rectangle"
-        app:secondPbColor="@color/textColor"
-        app:textColor="@color/textColor"
-        app:textDimension="13dp"
-        android:visibility="gone"
-        />-->
 
     <site.duqian.test.ProgressView
         android:id="@+id/progressView2"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
         app:firstPbColor="#C6A9A9"
         app:progress="10"
         app:progressShape="round_rectangle"
-        app:textColor="#FFFFFF"
         app:secondPbColor="#FFFFFF"
         app:strokeSize="3dp"
+        app:textColor="#FFFFFF"
         app:textDimension="15dp" />
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/arrow_icon" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/arrow_icon"
+        android:tint="@android:color/white" />
 
 </LinearLayout>
